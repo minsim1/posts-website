@@ -1,0 +1,28 @@
+services:
+  posts-mongodb:
+    image: bitnami/mongodb:latest
+    container_name: posts-mongodb
+    volumes:
+      - posts_mongodb_data:/bitnami/mongodb
+    environment:
+      - MONGODB_ADVERTISED_HOSTNAME=posts-mongodb
+      - MONGODB_REPLICA_SET_MODE=primary
+      - MONGODB_REPLICA_SET_KEY=${MONGODB_REPLICA_SET_KEY}
+      - MONGODB_ROOT_PASSWORD=${MONGODB_ROOT_PASSWORD}
+      - MONGODB_REPLICA_SET_NAME=rs0
+  posts-web:
+    build: .
+    container_name: posts-web
+    ports:
+      - "${PROD_OUTPUT_PORT}:3000"
+    environment:
+      - MONGODB_URI=mongodb://root:${MONGODB_ROOT_PASSWORD}@posts-mongodb:27017/${MONGODB_DB_NAME}?replicaSet=rs0&authSource=admin
+      - JWT_SECRET=${JWT_SECRET}
+      - PASSWORD_HASHING_ROUNDS=${PASSWORD_HASHING_ROUNDS}
+      - DEV=${DEV}
+      - DOMAIN=${DOMAIN}
+      - INSTAGRAM_API_KEY=${INSTAGRAM_API_KEY}
+      - INSTAGRAM_USER_ID=${INSTAGRAM_USER_ID}
+
+volumes:
+  posts_mongodb_data:

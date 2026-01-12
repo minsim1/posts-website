@@ -1,0 +1,62 @@
+/**
+ * Global Color Palette
+ * All colors used throughout the application
+ * Edit these variables to change the entire app's color scheme
+ */
+
+:root {
+    /* Primary colors */
+    --color-primary: #4a9eff;
+    --color-primary-hover: #6bb0ff;
+    --color-text: #e4e4e4;
+    --color-text-secondary: #b0b0b0;
+    --color-text-light: #a0a0a0;
+    --color-text-lighter: #b8b8b8;
+    --color-white: #ffffff;
+
+    /* Border colors */
+    --color-border: #333;
+    --color-border-light: #2a2a2a;
+
+    /* Background colors */
+    --color-bg-main: #1a1a1a;
+    --color-bg-light: #242424;
+    --color-bg-code: #2a2a2a;
+    --color-bg-input: #2a2a2a;
+
+    /* Role colors */
+    --color-role-admin: #ff6b6b;
+    --color-role-moderator: #4a9eff;
+    --color-role-user: #51cf66;
+
+    /* Error/Alert colors */
+    --color-error-bg: #3a1f1f;
+    --color-error-text: #ff6b6b;
+    --color-success-bg: #1f3a1f;
+    --color-success-text: #51cf66;
+
+    /* Interactive elements */
+    --color-link: #4a9eff;
+    --color-link-hover: #6bb0ff;
+
+    --color-error: #ff4d4d;
+    --color-success: #51cf66;
+    --color-warning: #ffa500;
+    --color-danger: #ff4d4d;
+
+    /* User colors */
+    --color-user-general: #555555;
+    --color-moderator: #299b3c;
+    --color-admin: #427fc4;
+
+    /* Vote colors */
+    --color-upvote: #51cf66;
+    --color-upvote-hover: #69db7c;
+    --color-downvote: #ff6b6b;
+    --color-downvote-hover: #ff8787;
+    --color-vote-neutral: #888888;
+
+    /* Action icon colors */
+    --color-icon-action: #909090;
+    --color-icon-action-hover: var(--color-primary);
+}
