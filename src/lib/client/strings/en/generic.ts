@@ -29,5 +29,16 @@ export const EN_genericStrings: GenericStrings = {
         create:{
             placeholder: "Write your comment here..."
         }
+    },
+    mainPage:{
+        welcomeMessages: [
+            "Welcome to a place, where your thoughts are free.",
+            "Welcome to a place, where free speech still exists.",
+            "Welcome to a place, where your voice matters.",
+        ],
+        buttons:{
+            explorePosts: "Explore",
+            createPost: "Participate",
+        }
     }
 }

@@ -25,9 +25,13 @@
         onDeleteCallback = () => {},
         autoOpenComments = true,
         showComments = true,
-        instagramMode = false
+        instagramMode = false,
+        forceComments = [],
+        allowedToComment = true
     }: { 
         post: SanitizedPost;
+        allowedToComment?: boolean;
+        forceComments?: SanitizedComment[];
         hidePersonalIcons?: boolean;
         showModerationRedirect?: boolean;
         showRedirect?: boolean;
@@ -49,7 +53,7 @@
         config ? config.limits.maxPostAgeToAllowDelete + post.createdAt > Date.now() : true
     );
     let canCommentOn = $derived(
-        config ? config.limits.maxPostAgeToComment + post.createdAt > Date.now() : false
+        config ? config.limits.maxPostAgeToComment + post.createdAt > Date.now() && allowedToComment : false
     );
 
     let deleteModalOpen = $state(false);
@@ -136,12 +140,17 @@
 
     async function fetchCommentsAndOpen(){
         if(commentsLoading) return;
+        if(forceComments && forceComments.length > 0){
+            loadedComments = forceComments;
+            commentsOpen = true;
+            return;
+        }
 
         commentsLoading = true;
         const response = await API.comments.getByPostId(post.postId);
         commentsLoading = false;
         if(response.success){
-            loadedComments = response.data.comments.sort((a, b) => b.createdAt - a.createdAt);
+            loadedComments = response.data.comments.sort((a, b) => a.createdAt - b.createdAt);
         }else{
             if(response.status == 401 || response.status == 403){
                 await LogOut();
@@ -247,6 +256,7 @@
         display: flex;
         flex-direction: column;
         gap: 1rem;
+        width: 100%;
     }
 
     .vote-and-post{

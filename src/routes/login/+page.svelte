@@ -1,10 +1,13 @@
 <script lang="ts">
 	import LoginForm from "$lib/client/components/forms/LoginForm.svelte";
+    import PostWallBackdrop from "$lib/client/components/general/PostWallBackdrop.svelte";
 </script>
 
 <svelte:head>
 	<title>Login</title>
 </svelte:head>
+
+<PostWallBackdrop />
 
 <div class="container">
 	<LoginForm />

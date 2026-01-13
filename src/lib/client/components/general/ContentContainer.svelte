@@ -18,6 +18,7 @@
         flex-direction: column;
         border-right: 1px solid var(--color-border);
         border-left: 1px solid var(--color-border);
+        background-color: var(--color-bg-main);
         width: 100%;
         max-width: 800px;
         flex: 1;

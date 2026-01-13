@@ -23,6 +23,13 @@ export interface GenericStrings{
         create:{
             placeholder: string,
         }
+    },
+    mainPage:{
+        welcomeMessages: string[];
+        buttons:{
+            explorePosts: string;
+            createPost: string;
+        }
     }
 }
 
