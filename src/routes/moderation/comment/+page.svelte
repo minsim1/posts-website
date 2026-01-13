@@ -189,7 +189,7 @@
 </script>
 
 <svelte:head>
-	<title>Moderate Comment</title>
+	<title>Comment Moderation</title>
 </svelte:head>
 
 {#if loading}

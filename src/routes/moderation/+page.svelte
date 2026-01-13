@@ -119,6 +119,10 @@
     });
 </script>
 
+<svelte:head>
+	<title>Moderation</title>
+</svelte:head>
+
 <ContentContainer>
     <div class="moderation-page">
         <div class="header">

@@ -30,6 +30,10 @@
     }
 </script>
 
+<svelte:head>
+	<title>About</title>
+</svelte:head>
+
 <ContentContainer>
     <ReturnToPageLink href='/home' text="Return to Home"/>
     <div class="button-container">

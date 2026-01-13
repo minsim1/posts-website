@@ -100,6 +100,10 @@
     });
 </script>
 
+<svelte:head>
+	<title>History</title>
+</svelte:head>
+
 <ContentContainer>
     <ReturnToPageLink text="Back to Home" href="/home"/>
     <div class="history-page">

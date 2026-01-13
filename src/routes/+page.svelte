@@ -40,9 +40,9 @@
 	});
 </script>
 
-<!-- <svelte:head>
-	<title>Redirecting...</title>
-</svelte:head> -->
+<svelte:head>
+	<title>Welcome!</title>
+</svelte:head>
 
 <PostWallBackdrop/>
 

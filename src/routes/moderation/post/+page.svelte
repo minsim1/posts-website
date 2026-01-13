@@ -185,7 +185,7 @@
 </script>
 
 <svelte:head>
-	<title>Moderate Post</title>
+	<title>Post Moderation</title>
 </svelte:head>
 
 {#if loading}

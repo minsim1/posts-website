@@ -239,6 +239,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Admin user control</title>
+</svelte:head>
+
 <CenterCard>
     {#if error}
         <p class="error">{error}</p>
