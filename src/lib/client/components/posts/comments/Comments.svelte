@@ -39,8 +39,7 @@
         instagramMode?: boolean;
     } = $props();
 
-    // let numOfCommentToShow = $state(CONFIG.comments.initialCountToShow);
-    let numOfCommentToShow = $state(10);
+    let numOfCommentToShow = $state(CONFIG.comments.initialCountToShow);
     let allCommentsAreShown = $derived(
         numOfCommentToShow >= comments.length
     );

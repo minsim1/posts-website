@@ -79,7 +79,7 @@
 	}
 	h1{
 		text-align: center;
-		text-shadow: black 5px 5px 10px;
+		text-shadow: black 5px 5px 2px;
 	}
 	.buttons-container{
 		display: flex;

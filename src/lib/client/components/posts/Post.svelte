@@ -151,6 +151,7 @@
         commentsLoading = false;
         if(response.success){
             loadedComments = response.data.comments.sort((a, b) => a.createdAt - b.createdAt);
+            post.commentsCount = loadedComments.length;
         }else{
             if(response.status == 401 || response.status == 403){
                 await LogOut();
@@ -173,6 +174,14 @@
     }
 
     async function handleCommentCreation(){
+        post.commentsCount += 1;
+        if(post.commentsCount < 0) post.commentsCount = 0; // Idk how that would happen, but just in case
+        fetchCommentsAndOpen();
+    }
+
+    async function handleCommentDeletion(){
+        post.commentsCount -= 1;
+        if(post.commentsCount < 0) post.commentsCount = 0;
         fetchCommentsAndOpen();
     }
 
@@ -235,7 +244,7 @@
                 hidePersonalIcons={hidePersonalIcons}
                 postId={post.postId}
                 commentCreatedCallback={handleCommentCreation}
-                commentDeletedCallback={fetchCommentsAndOpen}
+                commentDeletedCallback={handleCommentDeletion}
                 refreshPostsCallback={refreshPostsCallback}
                 instagramMode={instagramMode}
             />

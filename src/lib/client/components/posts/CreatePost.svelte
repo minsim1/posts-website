@@ -167,7 +167,7 @@
             <SendIcon />
         </button>
     </div>
-    {#if nextTimestampWhenUserCanPost > Date.now()}
+    {#if nextTimestampWhenUserCanPost > Date.now() && currentUser?.role !== 'admin'}
         <Alert
             message={`Please wait ${GetApprxTimeDifferenceString(nextTimestampWhenUserCanPost, Date.now())} before creating another post.`}
             type="error"

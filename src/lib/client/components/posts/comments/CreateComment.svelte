@@ -190,7 +190,7 @@
             <SendIcon />
         </button>
     </div>
-    {#if nextTimestampWhenUserCanComment > Date.now()}
+    {#if nextTimestampWhenUserCanComment > Date.now() && currentUser?.role !== 'admin'}
         <Alert
             message={`Please wait ${GetApprxTimeDifferenceString(nextTimestampWhenUserCanComment, Date.now())} before creating another comment.`}
             type="error"
