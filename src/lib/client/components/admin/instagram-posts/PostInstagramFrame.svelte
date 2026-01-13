@@ -6,15 +6,17 @@
     let {
         post,
         frameId,
-        titleText = ""
+        titleText = "",
+        scale = 1,
     } : {
         post: SanitizedPost,
         frameId?: string;
         titleText?: string
+        scale?: number;
     } = $props();
 </script>
 
-<GenericInstagramFrame frameId={frameId} titleText={titleText}>
+<GenericInstagramFrame frameId={frameId} titleText={titleText} scale={scale}>
     <div class="post-container">
         <Post
             post={post}
@@ -22,6 +24,7 @@
             showRedirect={false}
             instagramMode={true}
             hidePersonalIcons={true}
+            initialCommentNumShowOverride={5}
         />
     </div>
 </GenericInstagramFrame>

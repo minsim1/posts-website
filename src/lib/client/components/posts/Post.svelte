@@ -17,7 +17,7 @@
     import { STRINGS } from "$lib/client/strings/main";
 
     let { 
-        post,
+        post = $bindable(),
         hidePersonalIcons = false,
         showModerationRedirect = false,
         showRedirect = true,
@@ -27,9 +27,11 @@
         showComments = true,
         instagramMode = false,
         forceComments = [],
-        allowedToComment = true
+        allowedToComment = true,
+        initialCommentNumShowOverride,
     }: { 
         post: SanitizedPost;
+        initialCommentNumShowOverride?: number;
         allowedToComment?: boolean;
         forceComments?: SanitizedComment[];
         hidePersonalIcons?: boolean;
@@ -239,6 +241,7 @@
         <div class="comments">
             <Comments
                 comments={loadedComments}
+                initialCommentNumShowOverride={initialCommentNumShowOverride}
                 allowCommentCreation={canCommentOn}
                 showModerationRedirect={showModerationRedirect}
                 hidePersonalIcons={hidePersonalIcons}

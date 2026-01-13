@@ -17,6 +17,9 @@
     import Modal from "../../Modal.svelte";
     import ProgressBar from "../../ProgressBar.svelte";
     import { showNotification } from "$lib/client/stores/notifications";
+    import StringListBuilder from "./StringListBuilder.svelte";
+
+    const ENABLE_DOWNLOAD_BUTTON = false;
 
     let posts = $state<SanitizedPost[] | null>(null);
     let loading = $state(false);
@@ -29,8 +32,13 @@
     let maxNumOfImages = $state<string>("10")
     let autoReaddPosts = $state<boolean>(true);
     let leaveTheBestForLast = $state<boolean>(true);
+
+    let beforeImageTexts = $state<string[]>([]);
+    let afterImageTexts = $state<string[]>([]);
         
     let postIdsToIgnore = $state<string[]>([]);
+
+    let postIdWhitelist = $state<string[]>([]);
 
     // Content
     type InstagramImageContent = {
@@ -41,8 +49,34 @@
         topText?: string,
         post: SanitizedPost
     }
-    let instagramImages = $derived(updateInstagramImages(posts, maxNumOfImages, leaveTheBestForLast, postIdsToIgnore));
+    let instagramImages = $derived(updateInstagramImages(posts, maxNumOfImages, leaveTheBestForLast, postIdsToIgnore, beforeImageTexts, afterImageTexts, postIdWhitelist));
     let activeInstagramImageIndex = $state<number>(0);
+    $effect(() => {
+        const len = instagramImages.length;
+        if (len === 0) {
+            activeInstagramImageIndex = 0;
+            return;
+        }
+        if (activeInstagramImageIndex < 0) {
+            activeInstagramImageIndex = 0;
+        } else if (activeInstagramImageIndex >= len) {
+            activeInstagramImageIndex = len - 1;
+        }
+    });
+    
+    function toggleAutoReaddPosts(e: any) {
+        const newValue = e.target.checked;
+        autoReaddPosts = newValue;
+        if (!newValue) {
+            // Snapshot current images when turning off auto-readd
+            postIdWhitelist = instagramImages.filter(img => img.type == "post").map(img => img.post.postId);
+        } else {
+            // Clear whitelist when turning on auto-readd
+            postIdWhitelist = [];
+        }
+    }
+
+    let contentError = $derived(getErrorWithInstagramImages(maxNumOfImages, beforeImageTexts, afterImageTexts));
 
     // * This solution kinda eats RAM, but it's the easiest way to ensure the images are consistent during upload
     // image index -> data url
@@ -92,32 +126,60 @@
         lockedInImageUrls[imageIndex] = url;
     }
 
+    function getErrorWithInstagramImages(
+        maxNumOfImages: string,
+        beforeImageTexts: string[],
+        afterImageTexts: string[],
+    ){
+        if(!maxNumOfImages || isNaN(parseInt(maxNumOfImages)) || parseInt(maxNumOfImages) <= 0){
+            return "Max number of images must be a positive number.";
+        }
+
+        let maxNumberOfImages = parseInt(maxNumOfImages);
+
+        if(maxNumberOfImages < beforeImageTexts.length + afterImageTexts.length){
+            return `Max number of images must be at least ${beforeImageTexts.length + afterImageTexts.length} to fit all text images.`;
+        }
+
+        return "";
+    }
+
     function updateInstagramImages(
         posts: SanitizedPost[] | null,
         maxNumOfImages: string,
         leaveTheBestForLast: boolean,
-        postIdsToIgnoreSet: string[]
+        postIdsToIgnoreSet: string[],
+        beforeImageTexts: string[],
+        afterImageTexts: string[],
+        postIdWhitelist: string[]
     ): InstagramImageContent[] {
-
-        if(!posts){
-            return [];
-        }
-
+        // activeInstagramImageIndex = 0;
         if(!maxNumOfImages || isNaN(parseInt(maxNumOfImages)) || parseInt(maxNumOfImages) <= 0){
-            error = "Max number of images must be a positive number.";
             return [];
         }
 
         let maxNumberOfImages = parseInt(maxNumOfImages);
 
-        if(!posts || posts.length == 0){
+        if(maxNumberOfImages < beforeImageTexts.length + afterImageTexts.length){
             return [];
+        }
+
+        let tempInstagramImages: InstagramImageContent[] = [];
+        for(const text of beforeImageTexts){
+            tempInstagramImages.push({type: "text", text});
+        }
+
+        let effectiveLeftImageSlots = maxNumberOfImages - beforeImageTexts.length - afterImageTexts.length;
+
+        if(!posts || posts.length == 0){
+            return tempInstagramImages;
         }
 
         let sortedPosts: SanitizedPost[] = [];
         // Sort posts by score first, then by creation date
         sortedPosts = posts.slice()
         .filter(post => !postIdsToIgnoreSet.includes(post.postId))
+        .filter(post => postIdWhitelist.length == 0 || postIdWhitelist.includes(post.postId))
         .sort((a, b) => {
             if(a.score === b.score){
                 return b.createdAt - a.createdAt; // Newer posts first (If scores are equal)
@@ -126,7 +188,7 @@
         });
 
         if(sortedPosts.length == 0){
-            return [];
+            return tempInstagramImages;
         }
 
         if(leaveTheBestForLast){
@@ -140,16 +202,22 @@
             const requiredImageCountForHighestScorePosts = highestScorePosts.length + 1; // +1 for the text image
             const canFit2NonHighestPosts = 
                 (remainingPosts.length >= 2) && 
-                (requiredImageCountForHighestScorePosts + 2 <= maxNumberOfImages);
+                (requiredImageCountForHighestScorePosts + 2 <= effectiveLeftImageSlots);
             if(!canFit2NonHighestPosts){
                 // Just use sorted posts as is
-                return sortedPosts.slice(0, parseInt(maxNumOfImages)).map(post => {
-                    return {type: "post", post};
+                const posts = sortedPosts.slice(0, effectiveLeftImageSlots).map(post => {
+                    return {type: "post", post} as InstagramImageContent;
                 });
+                tempInstagramImages = tempInstagramImages.concat(posts);
+
+                for(const text of afterImageTexts){
+                    tempInstagramImages.push({type: "text", text});
+                }
+
+                return tempInstagramImages;
             }else{
                 // Show the worse images first, then the best ones at the end
-                const numOfNonHighestPostsToShow = Math.min(remainingPosts.length, maxNumberOfImages - requiredImageCountForHighestScorePosts);
-                let tempInstagramImages: InstagramImageContent[] = [];
+                const numOfNonHighestPostsToShow = Math.min(remainingPosts.length, effectiveLeftImageSlots - requiredImageCountForHighestScorePosts);
                 let beginningPosts: InstagramImageContent[] = 
                     remainingPosts
                     .slice(0, numOfNonHighestPostsToShow)
@@ -157,22 +225,32 @@
                     .map(post => {
                         return {type: "post", post};
                     });
-                tempInstagramImages = beginningPosts;
+                tempInstagramImages = tempInstagramImages.concat(beginningPosts);
                 tempInstagramImages.push({type: "text", text: CONFIG.instagram.images.bestForLastImageText});
                 let endingPosts: InstagramImageContent[] = highestScorePosts
-                    .slice(0, maxNumberOfImages - tempInstagramImages.length)
+                    .slice(0, effectiveLeftImageSlots - beginningPosts.length - 1) // -1 for the text image
                     .reverse() // Show best posts last
                     .map(post => {
                         return {type: "post", post, topText: CONFIG.instagram.images.bestPostTopText};
                     });
                 tempInstagramImages = tempInstagramImages.concat(endingPosts);
+                for(const text of afterImageTexts){
+                    tempInstagramImages.push({type: "text", text});
+                }
+
                 return tempInstagramImages;
             }
         }else{
             // Just use sorted posts as is
-            return sortedPosts.slice(0, parseInt(maxNumOfImages)).map(post => {
-                return {type: "post", post};
+            const posts = sortedPosts.slice(0, parseInt(maxNumOfImages)).map(post => {
+                return {type: "post", post} as InstagramImageContent;
             });
+            tempInstagramImages = tempInstagramImages.concat(posts);
+            for(const text of afterImageTexts){
+                tempInstagramImages.push({type: "text", text});
+            }
+
+            return tempInstagramImages;
         }
     }
 
@@ -301,18 +379,18 @@
         lockedInImageUrls = {}
     }
 
-    // async function downloadPostImage(frameId: string){
-    //     const dataUrl = await getDataUrlForFrame(frameId);
-    //     if(!dataUrl){
-    //         alert("Could not generate image for post.");
-    //         return;
-    //     }
+    async function downloadPostImage(frameId: string){
+        const dataUrl = await getDataUrlForFrame(frameId);
+        if(!dataUrl){
+            alert("Could not generate image for post.");
+            return;
+        }
 
-    //     const link = document.createElement('a');
-    //     link.download = 'instagram-post.png';
-    //     link.href = dataUrl;
-    //     link.click();
-    // }
+        const link = document.createElement('a');
+        link.download = 'instagram-post.png';
+        link.href = dataUrl;
+        link.click();
+    }
 
     // async function uploadPostImage(frameId: string){
     //     const dataUrl = await getDataUrlForFrame(frameId);
@@ -357,17 +435,24 @@
     <h2>Content control</h2>
 
     <TextInput type="number" label="Max number of images" id="max-num-of-images" bind:value={maxNumOfImages}/>
-    <Switch label="Auto re-add posts to carousel" bind:checked={autoReaddPosts}/>
+    <Switch label="Auto re-add posts to carousel" checked={autoReaddPosts} onChange={(e) => toggleAutoReaddPosts(e)} />
     <Switch label="Leave the best for last" bind:checked={leaveTheBestForLast}/>
     Num of posts to ignore: {postIdsToIgnore.length}
     <Button variant="secondary" on:click={clearPostsToIgnore}>Clear posts to ignore</Button>
+
+    <h3>Before image texts</h3>
+    <StringListBuilder bind:list={beforeImageTexts} />
+
+    <h3>After image texts</h3>
+    <StringListBuilder bind:list={afterImageTexts} />
 
     <hr/>
 
     {#if loading}
         <LoadingIcon />
-    {:else if error}
+    {:else if error || contentError}
         <Alert type="error" message={error} />
+        <Alert type="error" message={contentError} />
     {:else if activeInstagramImageIndex == 0 && instagramImages.length == 0}
         <p>No instagram images to show...</p>
     {:else if instagramImages.length <= activeInstagramImageIndex}
@@ -400,15 +485,20 @@
                 activeInstagramImageIndex = Math.max(Math.min(instagramImages.length - 1, activeInstagramImageIndex), 0);
             }}>Remove post from selection</Button>
         {/if}
+        {#if ENABLE_DOWNLOAD_BUTTON}
+            <Button variant="secondary" on:click={()=>{
+                downloadPostImage(`instagram-image-${index}`);
+            }}>Download Image</Button>
+        {/if}
     {/if}
 {/snippet}
 
 {#snippet showImage(instagramImage: InstagramImageContent, id: string)}
     {#key instagramImage}
         {#if instagramImage.type == "text"}
-            <CenterTextFrame text={instagramImage.text} frameId={id} />
+            <CenterTextFrame text={instagramImage.text} frameId={id} scale={0.35}/>
         {:else if instagramImage.type == "post"}
-            <PostInstagramFrame post={instagramImage.post} titleText={instagramImage.topText} frameId={id} />
+            <PostInstagramFrame post={instagramImage.post} titleText={instagramImage.topText} frameId={id} scale={0.35} />
         {/if}
     {/key}
 {/snippet}
@@ -456,9 +546,8 @@
 
     .query-input-container{
         display: flex;
-        align-items: end;
         width: 100%;
-        flex-direction: row;
+        flex-direction: column;
         gap: 1rem;
         margin-bottom: 1rem;
     }

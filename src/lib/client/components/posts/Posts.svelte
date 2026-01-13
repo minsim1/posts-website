@@ -80,7 +80,7 @@
     </div>
     {#each posts as post, index (post.postId)}
         <Post 
-            post={post} 
+            post={post}
             hidePersonalIcons={hidePersonalIcons}
             showModerationRedirect={showModerationRedirect}
             refreshPostsCallback={postsRefreshCallback}
