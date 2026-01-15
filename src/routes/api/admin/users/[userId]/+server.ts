@@ -4,10 +4,11 @@ import { ErrorCode, type APITypes, type AdminAPITypes } from '$lib/api/types';
 import UserManager from '$lib/server/managers/user-manager';
 import OTCManager from '$lib/server/managers/otc-manager';
 import { ConstructApiErrorJSON } from '$lib/server/helpers/errors';
+import { IsValidMongoDBObjectId } from '$lib/server/helpers/sanitization';
 
 export async function GET({ params, locals }: RequestEvent) {
 	const userId = params.userId;
-	if (!userId) {
+	if (!userId || !IsValidMongoDBObjectId(userId)) {
 		return ConstructResponseWithCode(400);
 	}
 
@@ -50,7 +51,7 @@ export async function GET({ params, locals }: RequestEvent) {
 
 export async function DELETE({ params, locals }: RequestEvent) {
 	const userId = params.userId;
-	if (!userId) {
+	if (!userId || !IsValidMongoDBObjectId(userId)) {
 		return ConstructResponseWithCode(400);
 	}
 

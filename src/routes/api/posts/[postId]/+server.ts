@@ -1,6 +1,6 @@
 import { json, type RequestEvent } from '@sveltejs/kit';
 import { ErrorCode, type SanitizedPost } from '$lib/api/types';
-import { GetPostSanitizationFunctionForUser } from '$lib/server/helpers/sanitization';
+import { GetPostSanitizationFunctionForUser, IsValidMongoDBObjectId } from '$lib/server/helpers/sanitization';
 import type { APITypes } from '$lib/api/types';
 import { ConstructResponseWithCode } from '$lib/server/helpers/repsonse';
 import { ConstructApiErrorJSON } from '$lib/server/helpers/errors';
@@ -10,7 +10,7 @@ import PostManager from '$lib/server/managers/post-manager';
 // Get specific post
 export async function GET({ cookies, url, locals, params }: RequestEvent) {
 	const postId = params.postId;
-	if(!postId){
+	if(!postId || !IsValidMongoDBObjectId(postId)){
 		return ConstructResponseWithCode(400);
 	}
 
@@ -55,11 +55,13 @@ async function getDeletePostParamsFromRequest(request: Request): Promise<APIType
 		
 		if(body.suspension.duration === undefined) return null;
 		
-		if(body.suspension.duration !== null
-			&& typeof body.suspension.duration !== 'number'
-			&& !Number.isInteger(body.suspension.duration)
-		){
-			return null;
+		if(body.suspension.duration !== null){
+			if(typeof body.suspension.duration !== 'number' || !Number.isInteger(body.suspension.duration)){
+				return null;
+			}
+			if(body.suspension.duration < 0){
+				return null;
+			}
 		}
 	}
 
@@ -74,7 +76,7 @@ async function getDeletePostParamsFromRequest(request: Request): Promise<APIType
 // Delete specific post
 export async function DELETE({ cookies, locals, request, params }: RequestEvent) {
 	const postId = params.postId;
-	if(!postId){
+	if(!postId || !IsValidMongoDBObjectId(postId)){
 		return ConstructResponseWithCode(400);
 	}
 

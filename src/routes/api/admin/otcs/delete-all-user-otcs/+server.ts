@@ -2,6 +2,7 @@ import { json, type RequestEvent } from '@sveltejs/kit';
 import { ConstructResponseWithCode } from '$lib/server/helpers/repsonse';
 import type { APITypes } from '$lib/api/types';
 import OTCManager from '$lib/server/managers/otc-manager';
+import { IsValidMongoDBObjectId } from '$lib/server/helpers/sanitization';
 
 async function validateRequest(request: Request): Promise<APITypes.Admin.OTC.DeleteAllUserOTCs.Request | null> {
 	let body: APITypes.Admin.OTC.DeleteAllUserOTCs.Request;
@@ -11,7 +12,7 @@ async function validateRequest(request: Request): Promise<APITypes.Admin.OTC.Del
 		return null;
 	}
 
-	if (!body.userId || typeof body.userId !== 'string') {
+	if (!body.userId || typeof body.userId !== 'string' || !IsValidMongoDBObjectId(body.userId)) {
 		return null;
 	}
 

@@ -382,7 +382,7 @@
 
 	@media (max-width: 768px) {
 		.username {
-			display: none;
+			font-size: 0.9rem;
 		}
 	}
 </style>

@@ -4,17 +4,17 @@ import { ConstructResponseWithCode } from '$lib/server/helpers/repsonse';
 import { ErrorCode, type APITypes } from '$lib/api/types';
 import CommentManager from '$lib/server/managers/comment-manager';
 import { ConstructApiErrorJSON } from '$lib/server/helpers/errors';
-import { GetCommentSanitizationFunctionForUser } from '$lib/server/helpers/sanitization';
+import { GetCommentSanitizationFunctionForUser, IsValidMongoDBObjectId } from '$lib/server/helpers/sanitization';
 
 // Get specific comment for post
 export async function GET({ cookies, params }: RequestEvent) {
 	const postId = params.postId;
-	if(!postId){
+	if(!postId || !IsValidMongoDBObjectId(postId)){
 		return ConstructResponseWithCode(400);
 	}
 
 	const commentId = params.commentId;
-	if(!commentId){
+	if(!commentId || !IsValidMongoDBObjectId(commentId)){
 		return ConstructResponseWithCode(400);
 	}
 
@@ -49,11 +49,13 @@ async function getDeleteCommentParamsFromRequest(request: Request): Promise<APIT
 		
 		if(body.suspension.duration === undefined) return null;
 		
-		if(body.suspension.duration !== null
-			&& typeof body.suspension.duration !== 'number'
-			&& !Number.isInteger(body.suspension.duration)
-		){
-			return null;
+		if(body.suspension.duration !== null){
+			if(typeof body.suspension.duration !== 'number' || !Number.isInteger(body.suspension.duration)){
+				return null;
+			}
+			if(body.suspension.duration < 0){
+				return null;
+			}
 		}
 	}
 
@@ -68,12 +70,12 @@ async function getDeleteCommentParamsFromRequest(request: Request): Promise<APIT
 // Delete specific comment for post
 export async function DELETE({ cookies, params, locals, request }: RequestEvent) {
 	const postId = params.postId;
-	if(!postId){
+	if(!postId || !IsValidMongoDBObjectId(postId)){
 		return ConstructResponseWithCode(400);
 	}
 
 	const commentId = params.commentId;
-	if(!commentId){
+	if(!commentId || !IsValidMongoDBObjectId(commentId)){
 		return ConstructResponseWithCode(400);
 	}
 

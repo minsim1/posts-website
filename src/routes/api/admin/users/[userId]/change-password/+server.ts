@@ -3,6 +3,7 @@ import { ConstructResponseWithCode } from '$lib/server/helpers/repsonse';
 import { ErrorCode, type APITypes } from '$lib/api/types';
 import UserManager from '$lib/server/managers/user-manager';
 import { ConstructApiErrorJSON } from '$lib/server/helpers/errors';
+import { IsValidMongoDBObjectId } from '$lib/server/helpers/sanitization';
 
 async function validateRequest(request: Request): Promise<APITypes.Admin.Users.ChangePassword.Request | null> {
 	let body: APITypes.Admin.Users.ChangePassword.Request;
@@ -21,7 +22,7 @@ async function validateRequest(request: Request): Promise<APITypes.Admin.Users.C
 
 export async function POST({ params, request, locals }: RequestEvent) {
 	const userId = params.userId;
-	if (!userId) {
+	if (!userId || !IsValidMongoDBObjectId(userId)) {
 		return ConstructResponseWithCode(400);
 	}
 

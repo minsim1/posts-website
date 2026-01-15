@@ -89,7 +89,7 @@
         bottom: 0;
         width: 100%;
         height: 150px;
-        bottom: 25px;
+        bottom: 20px;
         background: linear-gradient(to bottom, rgba(138, 56, 56, 0), var(--color-bg-main));
     }
 

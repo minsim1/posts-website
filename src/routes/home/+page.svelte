@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { text } from '@sveltejs/kit';
 	import { onMount } from 'svelte';
     import CreatePostForm from '$lib/client/components/posts/CreatePost.svelte';
     import ContentContainer from '$lib/client/components/general/ContentContainer.svelte';
@@ -113,6 +114,10 @@
 
 	.no-posts-text{
 		margin-top: 2rem;
-		font-size: 1.2rem;
+		font-size: 1rem;
+		font-style: italic;
+		color: var(--color-text-secondary);
+		padding: 0 1rem;
+		text-align: center;
 	}
 </style>

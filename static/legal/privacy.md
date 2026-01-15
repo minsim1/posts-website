@@ -1,16 +1,14 @@
-TODO: Finish up. This is only a template.
-
 # Privacy policy
 
 ## 1. INTRODUCTION
-This Privacy Policy describes how The Administrator of slop.minde.one ("we," "us," or "our") collects, uses, and discloses information when you use our closed community platform (the "Service").
+This Privacy Policy describes how The Administrator of post.minde.lol ("we," "us," or "our") collects, uses, and discloses information when you use our closed community platform (the "Service").
 
 We prioritize anonymity. Unlike typical platforms, we do not require your real name, email address, or phone number to register. Your interaction with the Service is primarily pseudonymous. However, certain technical data is processed to ensure the security and functioning of the Service.
 
 ## 2. DATA CONTROLLER
 The entity responsible for the processing of your data is:
-The Administrator of slop.minde.one
-Contact: [your contact information]
+The Administrator of post.minde.lol
+Contact: mindaugassimukaitis@gmail.com
 
 ## 3. DATA WE COLLECT
 We collect the minimum amount of data necessary to operate the Service.
@@ -64,7 +62,7 @@ You have the right to:
 - Erasure ("Right to be Forgotten"): Request deletion of your account. Note that this does not automatically erase all public posts you made, which may be retained based on our Legitimate Interest in maintaining the conversation history of the community.
 - Objection: Object to the processing of your data for specific purposes.
 
-To exercise these rights, contact us at: [your contact information].
+To exercise these rights, contact us at: mindaugassimukaitis@gmail.com
 
 ## 9. CHANGES TO THIS POLICY
 We may update this Privacy Policy to reflect changes in our technology or legal obligations. We will notify you of significant changes via a notice on the Service.
