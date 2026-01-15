@@ -202,7 +202,9 @@
 
 <div class="container">
     <div class="vote-and-post">
-        <Vote postId={post.postId} bind:currentVote bind:score refreshCallback={handleVoteRefreshCallback} instagramMode={instagramMode} />
+        <div class="vote-section">
+            <Vote postId={post.postId} bind:currentVote bind:score refreshCallback={handleVoteRefreshCallback} instagramMode={instagramMode} />
+        </div>
         <div class="post-content">
             <div class="metadata">
                 <ContentAuthor username={post.authorName} role={post.authorRole} />
@@ -307,7 +309,9 @@
         justify-content: flex-start;
         font-size: 0.8rem;
         padding: 0.5rem;
+        
     }
+
     .timeContainer{
         display: flex;
         padding: 0 0.5rem;
@@ -321,5 +325,36 @@
         display: flex;
         gap: 0.5rem;
         justify-content: flex-end;
+        height: 30px;
+    }
+
+    @media (max-width: 600px) {
+        .container{
+            padding: 0 1rem;
+            gap: 0;
+        }
+
+        .content{
+            padding: 0 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .comments{
+            padding-left: 3rem;
+        }
+
+        .metadata{
+            font-size: 0.65rem;
+            padding: 0.4rem;
+            padding-top: 1rem;
+        }
+
+        .vote-section{
+            scale: 0.9;
+        }
+
+        .action-buttons-container {
+            height: 20px;
+        }
     }
 </style>

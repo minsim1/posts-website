@@ -115,4 +115,10 @@
         color: var(--color-link-hover);
         text-decoration: underline;
     }
+
+    @media (max-width: 600px) {
+        button{
+            font-size: 0.9rem;
+        }
+    }
 </style>

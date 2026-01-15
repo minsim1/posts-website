@@ -216,7 +216,6 @@
 <style>
 	.user-list-container {
 		width: 100%;
-		padding: 1.5rem;
 		display: flex;
 		flex-direction: column;
 		gap: 2rem;

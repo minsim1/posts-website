@@ -104,4 +104,10 @@
     .section-button.active::before{
         width: 100%;
     }
+
+    @media (max-width: 600px) {
+        .section-button{
+            font-size: 1.2rem;
+        }
+    }
 </style>

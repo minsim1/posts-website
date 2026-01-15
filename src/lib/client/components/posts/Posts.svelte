@@ -7,6 +7,7 @@
     import { onMount } from "svelte";
     import { page } from "$app/state";
     import { goto } from "$app/navigation";
+    import ShieldIcon from "../icons/ShieldIcon.svelte";
 
     let { 
         posts = $bindable([]),
@@ -63,17 +64,16 @@
 <div class='container'>
     <div class="controls-row">
         <RadioGroup 
-            label="Sort by:"
             name="sortType"
             bind:value={sortType}
             options={[
-                { value: 'recent', label: 'Most Recent' },
-                { value: 'popular', label: 'Most Popular' }
+                { value: 'recent', label: 'Recent First' },
+                { value: 'popular', label: 'Popular First' }
             ]}
             onchange={sortTypeChanged}
         />
         <Switch 
-            label="Hide personal icons"
+            label="Privacy"
             bind:checked={hidePersonalIcons}
             helpComponent={personalIconsExplainer}
         />
@@ -92,9 +92,9 @@
 </div>
 
 {#snippet personalIconsExplainer()}
-    <HelpButton title="Why hide personal icons?">
+    <HelpButton title="What is privacy mode?">
         <p>When browsing in public, the "delete post" button can reveal which anonymous posts are yours.</p>
-        <p>Use this option to hide those personal icons for added privacy.</p>
+        <p>Use this option to hide those personal icons</p>
     </HelpButton>
 {/snippet}
 
@@ -105,19 +105,30 @@
         width: 100%;
         gap: 1rem;
         padding-top: 1rem;
+        padding-bottom: 2rem;
     }
     .controls-row {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: 1rem;
-        padding: 0rem 2rem;
+        gap: 1.5rem;
+        padding: 0rem 1rem;
         flex-wrap: wrap;
+        margin-bottom: 0.5rem;
     }
     hr{
         border: none;
         border-top: 2px solid var(--color-border-light);
         width: 95%;
         align-self: center;
+    }
+    @media (max-width: 600px) {
+        .container {
+            gap: 1rem;
+        }
+
+        .controls-row {
+            gap: 0;
+        }
     }
 </style>

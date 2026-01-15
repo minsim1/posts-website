@@ -31,7 +31,7 @@
     {#if showComments && onComments}
         <button class="comments-button" onclick={onComments} aria-label="Toggle comments">
             <span class="comments-count">{commentsCount}</span>
-            <CommentIcon />
+            <CommentIcon/>
         </button>
     {/if}
     {#if showRedirect && onRedirect}
@@ -67,12 +67,14 @@
         border: none;
         color: var(--color-icon-action);
         cursor: pointer;
-        padding: 0.5rem;
+        aspect-ratio: 1 / 1;
         display: flex;
         align-items: center;
         justify-content: center;
         transition: color 0.2s;
         border-radius: 4px;
+        height: 100%;
+        padding: 0.5rem;
     }
 
     .comments-button {
@@ -98,8 +100,28 @@
 
     .comments-button :global(svg),
     .moderation-button :global(svg),
+    .redirect-button :global(svg),
     .delete-button :global(svg) {
         width: 18px;
-        height: 18px;
+    }
+
+    @media (max-width: 600px) {
+        .action-buttons {
+            gap: 0.6rem;
+        }
+
+        .comments-button,
+        .redirect-button,
+        .moderation-button,
+        .delete-button {
+            padding: 0.3rem;
+        }
+
+        .comments-button :global(svg),
+        .moderation-button :global(svg),
+        .redirect-button :global(svg),
+        .delete-button :global(svg) {
+            width: 15px;
+        }
     }
 </style>

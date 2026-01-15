@@ -233,7 +233,7 @@
     }
 
     .limit-counter{
-        padding-left: 1rem;
+        padding-left: 0.25rem;
         text-align: left;
         font-size: 0.9rem;
         color: var(--color-text-secondary);
@@ -307,4 +307,25 @@
 	textarea::placeholder {
 		color: var(--color-text-secondary);
 	}
+
+    @media (max-width: 600px) {
+        .create-comment {
+            padding: 1rem 0.5rem 0 0.5rem;
+        }
+
+        textarea{
+            font-size: 0.9rem;
+            max-height: 30px;
+            padding: 10px;
+        }
+
+        .limit-counter{
+            font-size: 0.8rem;
+        }
+
+        button{
+            width: 35px;
+            height: 35px;
+        }
+    }
 </style>

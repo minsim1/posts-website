@@ -89,4 +89,10 @@
 	.button-group :global(.btn) {
 		flex: 1;
 	}
+
+	@media (max-width: 600px) {
+		.warning-section{
+			padding: 0rem;
+		}
+	}
 </style>

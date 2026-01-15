@@ -143,7 +143,6 @@
     .history-page {
         width: 100%;
         margin: 0 auto;
-        padding: 2rem 1rem;
         display: flex;
         flex-direction: column;
         align-items: center;

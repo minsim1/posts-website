@@ -464,13 +464,13 @@
     {/if}
 </div>
 
-{#snippet showChangeableImageByIndex(index: number, allowToRemoveFromSelection: boolean = true)}
+{#snippet showChangeableImageByIndex(index: number, allowToRemoveFromSelection: boolean = true, scale: number = 0.35)}
     Post number {activeInstagramImageIndex + 1} of {instagramImages.length}
     {@const image = instagramImages[index]}
     {#if !image}
         <p>Could not load image.</p>
     {:else}
-        {@render showImage(image, `instagram-image-${index}`)}
+        {@render showImage(image, `instagram-image-${index}`, scale)}
         <div class="image-navigation-buttons">
             <Button variant="secondary" disabled={activeInstagramImageIndex === 0} on:click={()=>{
                 activeInstagramImageIndex = Math.max(0, activeInstagramImageIndex - 1);
@@ -493,19 +493,19 @@
     {/if}
 {/snippet}
 
-{#snippet showImage(instagramImage: InstagramImageContent, id: string)}
+{#snippet showImage(instagramImage: InstagramImageContent, id: string, scale: number = 0.35)}
     {#key instagramImage}
         {#if instagramImage.type == "text"}
-            <CenterTextFrame text={instagramImage.text} frameId={id} scale={0.35}/>
+            <CenterTextFrame text={instagramImage.text} frameId={id} scale={scale}/>
         {:else if instagramImage.type == "post"}
-            <PostInstagramFrame post={instagramImage.post} titleText={instagramImage.topText} frameId={id} scale={0.35} />
+            <PostInstagramFrame post={instagramImage.post} titleText={instagramImage.topText} frameId={id} scale={scale} />
         {/if}
     {/key}
 {/snippet}
 
 <Modal bind:isOpen={finalReviewModalOpen} title="Final Review" onClose={finalReviewClosed}>
     <div class="container">
-        {@render showChangeableImageByIndex(activeInstagramImageIndex, false)}
+        {@render showChangeableImageByIndex(activeInstagramImageIndex, false, 0.3)}
         <Button variant="secondary" on:click={()=>{
             lockInImageUrl(activeInstagramImageIndex, `instagram-image-${activeInstagramImageIndex}`);
         }} disabled={lockedInImageUrls[activeInstagramImageIndex] != null}>Lock in image</Button>
