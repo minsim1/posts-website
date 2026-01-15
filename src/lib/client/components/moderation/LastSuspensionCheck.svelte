@@ -27,9 +27,9 @@
 
 	async function handleCheck() {
 		loading = true;
-		checked = true;
-
+		
 		const response = await API.moderation.getAuthorLastSuspension(type, id);
+		checked = true;
 		loading = false;
 
 		if (response.success) {

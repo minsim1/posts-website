@@ -15,7 +15,7 @@
     import Posts from "$lib/client/components/posts/Posts.svelte";
 
     let selectedDate = $state("");
-    let loading = $state(false);
+    let loading = $state(true);
     let posts = $state<SanitizedPost[]>([]);
     let error = $state("");
 
@@ -84,6 +84,8 @@
     }
 
     onMount(() => {
+        loading = true;
+
         const urlDate = $page.url.searchParams.get('date');
         
         if (urlDate && /^\d{4}-\d{2}-\d{2}$/.test(urlDate)) {
