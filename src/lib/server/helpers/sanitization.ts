@@ -1,4 +1,5 @@
 import type { SanitizedComment, SanitizedConfig, SanitizedPost } from "$lib/api/types";
+import mongoose from "mongoose";
 import type { IComment } from "../db/models/comment";
 import type { IConfig } from "../db/models/config";
 import type { IPost } from "../db/models/post";
@@ -60,4 +61,8 @@ export function SanitizeConfig(config: IConfig): SanitizedConfig {
             minWaitToChangeUsername: config.limits.minWaitToChangeUsername,
         }
     }   
+}
+
+export function IsValidMongoDBObjectId(id: string): boolean {
+    return mongoose.Types.ObjectId.isValid(id);
 }

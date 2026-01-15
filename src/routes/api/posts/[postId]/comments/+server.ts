@@ -3,13 +3,13 @@ import { connectDB } from '$lib/server/db/database';
 import { ConstructResponseWithCode } from '$lib/server/helpers/repsonse';
 import CommentManager from '$lib/server/managers/comment-manager';
 import { ErrorCode, type APITypes, type SanitizedComment } from '$lib/api/types';
-import { GetCommentSanitizationFunctionForUser } from '$lib/server/helpers/sanitization';
+import { GetCommentSanitizationFunctionForUser, IsValidMongoDBObjectId } from '$lib/server/helpers/sanitization';
 import { ConstructApiErrorJSON } from '$lib/server/helpers/errors';
 
 // Get all comments for post
 export async function GET({ cookies, params, locals }: RequestEvent) {
 	const postId = params.postId;
-	if(!postId){
+	if(!postId || !IsValidMongoDBObjectId(postId)){
 		return ConstructResponseWithCode(400);
 	}
 
@@ -56,7 +56,7 @@ function getCreateCommentParamsFromRequest(request: Request): Promise<APITypes.P
 // Create a comment for a post
 export async function POST({ request, params, locals }: RequestEvent) {
 	const postId = params.postId;
-	if(!postId){
+	if(!postId || !IsValidMongoDBObjectId(postId)){
 		return ConstructResponseWithCode(400);
 	}
 

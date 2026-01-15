@@ -3,6 +3,7 @@ import { ConstructResponseWithCode } from '$lib/server/helpers/repsonse';
 import { ErrorCode, type APITypes } from '$lib/api/types';
 import UserManager from '$lib/server/managers/user-manager';
 import { ConstructApiErrorJSON } from '$lib/server/helpers/errors';
+import { IsValidMongoDBObjectId } from '$lib/server/helpers/sanitization';
 
 function validateRequest(body: any): body is APITypes.Admin.Users.LiftSuspension.Request {
     if(typeof body !== 'object') return false;
@@ -16,7 +17,7 @@ function validateRequest(body: any): body is APITypes.Admin.Users.LiftSuspension
 
 export async function POST({ params, request, locals }: RequestEvent) {
 	const userId = params.userId;
-	if (!userId) {
+	if (!userId || !IsValidMongoDBObjectId(userId)) {
 		return ConstructResponseWithCode(400);
 	}
 

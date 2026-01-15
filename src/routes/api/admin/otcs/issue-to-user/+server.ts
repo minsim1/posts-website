@@ -3,6 +3,7 @@ import { ConstructResponseWithCode } from '$lib/server/helpers/repsonse';
 import { ErrorCode, type APITypes } from '$lib/api/types';
 import OTCManager from '$lib/server/managers/otc-manager';
 import { ConstructApiErrorJSON } from '$lib/server/helpers/errors';
+import { IsValidMongoDBObjectId } from '$lib/server/helpers/sanitization';
 
 async function validateRequest(request: Request): Promise<APITypes.Admin.OTC.IssueToUser.Request | null> {
 	let body: APITypes.Admin.OTC.IssueToUser.Request;
@@ -12,7 +13,7 @@ async function validateRequest(request: Request): Promise<APITypes.Admin.OTC.Iss
 		return null;
 	}
 
-	if (!body.userId || typeof body.userId !== 'string') {
+	if (!body.userId || typeof body.userId !== 'string' || !IsValidMongoDBObjectId(body.userId)) {
 		return null;
 	}
 

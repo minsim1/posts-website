@@ -1,6 +1,6 @@
 import { json, type RequestEvent } from '@sveltejs/kit';
 import { ConstructResponseWithCode } from '$lib/server/helpers/repsonse';
-import { GetPostSanitizationFunctionForUser } from '$lib/server/helpers/sanitization';
+import { GetPostSanitizationFunctionForUser, IsValidMongoDBObjectId } from '$lib/server/helpers/sanitization';
 import { ErrorCode, type APITypes, type SanitizedPost } from '$lib/api/types';
 import { configManager } from '$lib/server/managers/config-manager';
 import { CheckPostContentValidity } from '$lib/helpers/validation';
@@ -21,7 +21,7 @@ function getValidInputFromRequest(request: Request): Promise<APITypes.Posts.Vote
 			return resolve(null);
 		}
 
-		if(typeof body.postId !== 'string' || typeof body.voteType !== 'string'){
+		if(typeof body.postId !== 'string' || typeof body.voteType !== 'string' || !IsValidMongoDBObjectId(body.postId)){
 			return resolve(null);
 		}
 
