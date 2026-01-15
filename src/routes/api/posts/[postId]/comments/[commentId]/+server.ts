@@ -49,11 +49,13 @@ async function getDeleteCommentParamsFromRequest(request: Request): Promise<APIT
 		
 		if(body.suspension.duration === undefined) return null;
 		
-		if(body.suspension.duration !== null
-			&& typeof body.suspension.duration !== 'number'
-			&& !Number.isInteger(body.suspension.duration)
-		){
-			return null;
+		if(body.suspension.duration !== null){
+			if(typeof body.suspension.duration !== 'number' || !Number.isInteger(body.suspension.duration)){
+				return null;
+			}
+			if(body.suspension.duration < 0){
+				return null;
+			}
 		}
 	}
 

@@ -45,9 +45,12 @@ async function getValidatedConfigDataFromRequest(req: Request) : Promise<APIType
 		if(!Array.isArray(body.newUserInteractionLimits)) return null;
 
 		for(const limit of body.newUserInteractionLimits){
-			if(typeof limit.timeframe !== 'number' || typeof limit.maxInteractions !== 'number' || !Array.isArray(limit.interactionTypes)){
+			if(!Array.isArray(limit.interactionTypes)){
 				return null;
 			}
+
+			if(!isPositiveInteger(limit.timeframe)) return null;
+			if(!isPositiveInteger(limit.maxInteractions)) return null;
 
 			for(const interactionType of limit.interactionTypes){
 				if(typeof interactionType !== 'string'){
@@ -70,7 +73,7 @@ async function getValidatedConfigDataFromRequest(req: Request) : Promise<APIType
 			}
 
 			const newUserInteraction = limit.newLimit;
-			if(typeof newUserInteraction.timeframe !== 'number' || typeof newUserInteraction.maxInteractions !== 'number' || !Array.isArray(newUserInteraction.interactionTypes)){
+			if(!isPositiveInteger(newUserInteraction.timeframe) || !isPositiveInteger(newUserInteraction.maxInteractions) || !Array.isArray(newUserInteraction.interactionTypes)){
 				return null;
 			}
 
