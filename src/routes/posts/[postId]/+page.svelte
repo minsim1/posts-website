@@ -124,7 +124,7 @@
             </div>
             <div class="show-personal-container">
                 <Switch 
-                    label="Hide personal icons"
+                    label="Privacy"
                     bind:checked={hidePersonalIcons}
                     helpComponent={personalIconsExplainer}
                 />
@@ -145,9 +145,9 @@
 {/if}
 
 {#snippet personalIconsExplainer()}
-    <HelpButton title="Why hide personal icons?">
+    <HelpButton title="What is privacy mode?">
         <p>When browsing in public, the "delete post" button can reveal which anonymous posts are yours.</p>
-        <p>Use this option to hide those personal icons for added privacy.</p>
+        <p>Use this option to hide those personal icons</p>
     </HelpButton>
 {/snippet}
 
