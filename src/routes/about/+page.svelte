@@ -30,6 +30,10 @@
     }
 </script>
 
+<svelte:head>
+	<title>About</title>
+</svelte:head>
+
 <ContentContainer>
     <ReturnToPageLink href='/home' text="Return to Home"/>
     <div class="button-container">
@@ -99,5 +103,11 @@
 
     .section-button.active::before{
         width: 100%;
+    }
+
+    @media (max-width: 600px) {
+        .section-button{
+            font-size: 1.2rem;
+        }
     }
 </style>

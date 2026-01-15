@@ -79,6 +79,9 @@
 			reason={suspension.reason}
 			suspendedUntilTimestamp={suspension.suspendedUntilTimestamp}
 		/>
+		{#if !suspension.suspendedUntilTimestamp || suspension.suspendedUntilTimestamp > Date.now()}
+			<p class="warning">The suspension might have been lifted and is not nescessarily active</p>
+		{/if}
 	{:else}
 		{#if suspensionCheckInfo}
 			<p class="no-suspension">{suspensionCheckInfo}</p>
@@ -114,5 +117,11 @@
 		color: var(--color-text-secondary);
 		font-style: italic;
 		margin: 1rem 0;
+	}
+
+	p.warning{
+		color: var(--color-warning);
+		font-weight: bold;
+		margin-top: 0.5rem;
 	}
 </style>

@@ -3,27 +3,32 @@
         children,
         addBottomFader = true,
         frameId = "",
-        titleText = ""
+        titleText = "",
+        scale = 0.5,
     } : {
         addBottomFader?: boolean,
         children: any,
         frameId?: string
-        titleText?: string
+        titleText?: string,
+        scale?: number
     } = $props();
 </script>
 
-<div class="container">
+<div class="container" style={`width: ${1024 * scale}px; height: ${1024 * scale}px; scale: ${scale};`}>
     <div class="frame" id={frameId}>
-        {#if titleText}
-            <h1>{titleText}</h1>
-            <hr/>
-        {/if}
-        {@render children?.()}
-        {#if addBottomFader}
-            <div class="bottom-fader"></div>
-            <div class="bottom-block"></div>
-        {/if}
+        <div class="content">
+            {#if titleText}
+                <h1>{titleText}</h1>
+                <hr/>
+            {/if}
+            {@render children?.()}
+            {#if addBottomFader}
+                <div class="bottom-fader"></div>
+                <div class="bottom-block"></div>
+            {/if}
+        </div>
     </div>
+    <div class="container-border" style={`width: ${1024}px; height: ${1024}px;`}></div>
 </div>
 
 
@@ -44,13 +49,31 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        position: relative;
+    }
+
+    .container-border{
+        position:absolute;
+        box-sizing: border-box;
+        pointer-events: none;
         border: 2px solid var(--color-border);
     }
 
+    .content{
+        width: 50%;
+        height: 50%;
+        scale: 2;
+        translate: 0 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
     .frame {
-        width: 512px;
-        height: 512px;
-        border: none;
+        min-width: 1024px;
+        min-height: 1024px;
+        width: 1024px;
+        height: 1024px;
         display: flex;
         flex-direction: column;
         align-items: center;

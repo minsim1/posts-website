@@ -17,7 +17,7 @@
     import { STRINGS } from "$lib/client/strings/main";
 
     let { 
-        post,
+        post = $bindable(),
         hidePersonalIcons = false,
         showModerationRedirect = false,
         showRedirect = true,
@@ -25,9 +25,15 @@
         onDeleteCallback = () => {},
         autoOpenComments = true,
         showComments = true,
-        instagramMode = false
+        instagramMode = false,
+        forceComments = [],
+        allowedToComment = true,
+        initialCommentNumShowOverride,
     }: { 
         post: SanitizedPost;
+        initialCommentNumShowOverride?: number;
+        allowedToComment?: boolean;
+        forceComments?: SanitizedComment[];
         hidePersonalIcons?: boolean;
         showModerationRedirect?: boolean;
         showRedirect?: boolean;
@@ -49,7 +55,7 @@
         config ? config.limits.maxPostAgeToAllowDelete + post.createdAt > Date.now() : true
     );
     let canCommentOn = $derived(
-        config ? config.limits.maxPostAgeToComment + post.createdAt > Date.now() : false
+        config ? config.limits.maxPostAgeToComment + post.createdAt > Date.now() && allowedToComment : false
     );
 
     let deleteModalOpen = $state(false);
@@ -136,12 +142,18 @@
 
     async function fetchCommentsAndOpen(){
         if(commentsLoading) return;
+        if(forceComments && forceComments.length > 0){
+            loadedComments = forceComments;
+            commentsOpen = true;
+            return;
+        }
 
         commentsLoading = true;
         const response = await API.comments.getByPostId(post.postId);
         commentsLoading = false;
         if(response.success){
-            loadedComments = response.data.comments.sort((a, b) => b.createdAt - a.createdAt);
+            loadedComments = response.data.comments.sort((a, b) => a.createdAt - b.createdAt);
+            post.commentsCount = loadedComments.length;
         }else{
             if(response.status == 401 || response.status == 403){
                 await LogOut();
@@ -164,6 +176,14 @@
     }
 
     async function handleCommentCreation(){
+        post.commentsCount += 1;
+        if(post.commentsCount < 0) post.commentsCount = 0; // Idk how that would happen, but just in case
+        fetchCommentsAndOpen();
+    }
+
+    async function handleCommentDeletion(){
+        post.commentsCount -= 1;
+        if(post.commentsCount < 0) post.commentsCount = 0;
         fetchCommentsAndOpen();
     }
 
@@ -182,7 +202,9 @@
 
 <div class="container">
     <div class="vote-and-post">
-        <Vote postId={post.postId} bind:currentVote bind:score refreshCallback={handleVoteRefreshCallback} instagramMode={instagramMode} />
+        <div class="vote-section">
+            <Vote postId={post.postId} bind:currentVote bind:score refreshCallback={handleVoteRefreshCallback} instagramMode={instagramMode} />
+        </div>
         <div class="post-content">
             <div class="metadata">
                 <ContentAuthor username={post.authorName} role={post.authorRole} />
@@ -221,12 +243,13 @@
         <div class="comments">
             <Comments
                 comments={loadedComments}
+                initialCommentNumShowOverride={initialCommentNumShowOverride}
                 allowCommentCreation={canCommentOn}
                 showModerationRedirect={showModerationRedirect}
                 hidePersonalIcons={hidePersonalIcons}
                 postId={post.postId}
                 commentCreatedCallback={handleCommentCreation}
-                commentDeletedCallback={fetchCommentsAndOpen}
+                commentDeletedCallback={handleCommentDeletion}
                 refreshPostsCallback={refreshPostsCallback}
                 instagramMode={instagramMode}
             />
@@ -247,6 +270,7 @@
         display: flex;
         flex-direction: column;
         gap: 1rem;
+        width: 100%;
     }
 
     .vote-and-post{
@@ -285,7 +309,9 @@
         justify-content: flex-start;
         font-size: 0.8rem;
         padding: 0.5rem;
+        
     }
+
     .timeContainer{
         display: flex;
         padding: 0 0.5rem;
@@ -299,5 +325,36 @@
         display: flex;
         gap: 0.5rem;
         justify-content: flex-end;
+        height: 30px;
+    }
+
+    @media (max-width: 600px) {
+        .container{
+            padding: 0 1rem;
+            gap: 0;
+        }
+
+        .content{
+            padding: 0 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .comments{
+            padding-left: 3rem;
+        }
+
+        .metadata{
+            font-size: 0.65rem;
+            padding: 0.4rem;
+            padding-top: 1rem;
+        }
+
+        .vote-section{
+            scale: 0.9;
+        }
+
+        .action-buttons-container {
+            height: 20px;
+        }
     }
 </style>

@@ -100,6 +100,10 @@
     });
 </script>
 
+<svelte:head>
+	<title>History</title>
+</svelte:head>
+
 <ContentContainer>
     <ReturnToPageLink text="Back to Home" href="/home"/>
     <div class="history-page">
@@ -139,7 +143,6 @@
     .history-page {
         width: 100%;
         margin: 0 auto;
-        padding: 2rem 1rem;
         display: flex;
         flex-direction: column;
         align-items: center;

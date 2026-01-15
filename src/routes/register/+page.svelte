@@ -1,10 +1,13 @@
 <script lang="ts">
 	import RegisterForm from "$lib/client/components/forms/RegisterForm.svelte";
+    import PostWallBackdrop from "$lib/client/components/general/PostWallBackdrop.svelte";
 </script>
 
 <svelte:head>
 	<title>Register</title>
 </svelte:head>
+
+<PostWallBackdrop />
 
 <div class="container">
 	<RegisterForm />

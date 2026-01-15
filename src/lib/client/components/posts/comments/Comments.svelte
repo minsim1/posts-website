@@ -20,6 +20,7 @@
     let { 
         comments = $bindable([]),
         showModerationRedirect = false,
+        initialCommentNumShowOverride,
         hidePersonalIcons = false,
         postId,
         allowCommentCreation = true,
@@ -30,6 +31,7 @@
     }: { 
         comments: SanitizedComment[];
         showModerationRedirect: boolean;
+        initialCommentNumShowOverride?: number;
         hidePersonalIcons: boolean;
         postId: string;
         allowCommentCreation?: boolean;
@@ -39,8 +41,8 @@
         instagramMode?: boolean;
     } = $props();
 
-    // let numOfCommentToShow = $state(CONFIG.comments.initialCountToShow);
-    let numOfCommentToShow = $state(10);
+    // svelte-ignore state_referenced_locally
+        let numOfCommentToShow = $state(initialCommentNumShowOverride ?? CONFIG.comments.initialCountToShow);
     let allCommentsAreShown = $derived(
         numOfCommentToShow >= comments.length
     );
@@ -112,5 +114,11 @@
     button:hover{
         color: var(--color-link-hover);
         text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+        button{
+            font-size: 0.9rem;
+        }
     }
 </style>

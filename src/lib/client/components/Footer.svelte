@@ -48,7 +48,7 @@
 <footer class="footer">
 	<div class="footer-content">
 		<div class="footer-row">
-			<p>&copy; {currentYear} COPYRIGHT PLACEHOLDER</p>
+			<p>&copy; {currentYear} | All rights reserved.</p>
 			<!-- <div class="language-selector">
 				<button class="lang-dropdown-toggle" onclick={toggleDropdown}>
 					{languageFlags[currentLanguage]} {currentLanguage.toUpperCase()}

@@ -5,7 +5,7 @@ export default defineConfig({
 	plugins: [sveltekit()],
 	server:{
 		allowedHosts: [
-			"967a3cac5c44.ngrok-free.app",
+			"bb088f052d25.ngrok-free.app",
 		]
 	},
 	ssr: {

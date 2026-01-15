@@ -216,16 +216,6 @@
 		await loadUser();
 	});
 
-	// Watch for URL changes and reload user data
-	$effect(() => {
-		const id = $page.url.searchParams.get('id');
-		if (id && id !== targetUserId && currentUser) {
-			targetUserId = id;
-			error = "";
-			loadUser();
-		}
-	});
-
 	function handleReturnToAdminPanel() {
 		goto('/admin');
 	}
@@ -238,6 +228,10 @@
 		await loadUser();
 	}
 </script>
+
+<svelte:head>
+	<title>Admin user control</title>
+</svelte:head>
 
 <CenterCard>
     {#if error}

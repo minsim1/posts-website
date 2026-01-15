@@ -37,9 +37,9 @@ export const CONFIG = {
     },
     instagram:{
         images:{
-            bestForLastImageText: "And now, the best slop for last...",
-            bestPostTopText: "Top Rated Slop",
-            carouselCaptionText: "You can find the link to the website in the bio if you want to post slop yourself!",
+            bestForLastImageText: "And now, the best posts for last...",
+            bestPostTopText: "Top Rated Posts",
+            carouselCaptionText: "You can find the link to the website in the bio if you want to post yourself!",
         }
     },
     jwt:{

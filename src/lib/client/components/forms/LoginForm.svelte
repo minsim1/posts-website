@@ -128,6 +128,7 @@
 		padding: 2rem;
 		border: 1px solid var(--color-border);
 		border-radius: 4px;
+		background-color: var(--color-bg-main);
 	}
 
 	.suspension-container{

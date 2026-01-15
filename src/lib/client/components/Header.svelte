@@ -17,7 +17,7 @@
 	let user = $state<SanitizedUser | null>(null);
 
 	const navLinks = [
-		{ path: '/', label: 'Landing' },
+		// { path: '/', label: 'Landing' },
 		{ path: '/home', label: 'Home' },
 		{ path: '/about', label: 'About' },
 		{ path: '/history', label: 'History' }

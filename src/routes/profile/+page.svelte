@@ -72,25 +72,24 @@
 
 {#snippet logoutEverywhereSnippet()}
 	<Button variant="danger" type="button" on:click={handleLogoutEverywhere}>
-		Logout Everywhere (Not immediate)
+		Logout Everywhere
 	</Button>
+	<p class="warning">Logging out everywhere may take some time to propagate.</p>
 {/snippet}
 
 {#snippet otcList()}
 	<OTCList/>
 {/snippet}
 
-<CenterCard>
-	<div class="container">
-		<ReturnToPageLink href="/home" text="Return to home" />
-		{@render otcList()}
-		{@render changeUsernameSnippet()}
-		{@render changePasswordSnippet()}
-		{@render clearCacheSnippet()}
-		{@render logoutSnippet()}
-		{@render logoutEverywhereSnippet()}
-	</div>
-</CenterCard>
+<div class="container">
+	<ReturnToPageLink href="/home" text="Return to home" />
+	{@render otcList()}
+	{@render changeUsernameSnippet()}
+	{@render changePasswordSnippet()}
+	{@render clearCacheSnippet()}
+	{@render logoutSnippet()}
+	{@render logoutEverywhereSnippet()}
+</div>
 
 <style>
 	.container{
@@ -99,5 +98,21 @@
 		justify-content: center;
 		flex-direction: column;
 		gap: 1rem;
+		max-width: 500px;
+		width: 100%;
+		min-width: min-content;
+		align-self: center;
+		padding-bottom: 1rem;
+	}
+
+	p{
+		width: 100%;
+		padding-left: 1rem;
+	}
+
+	p.warning{
+		color: var(--color-warning);
+		font-size: 0.9rem;
+		text-align: center;
 	}
 </style>

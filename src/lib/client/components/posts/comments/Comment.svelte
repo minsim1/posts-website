@@ -268,4 +268,16 @@
         font-style: italic;
     }
 
+    @media (max-width: 600px) {
+        .metadata{
+            font-size: 0.6rem;
+            padding: 0.5rem;
+        }
+
+        .content{
+            padding: 0.5rem 1rem;
+            font-size: 1.1rem;
+        }
+    }
+
 </style>

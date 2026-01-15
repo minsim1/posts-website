@@ -5,14 +5,16 @@
 
     let {
         frameId,
-        text
+        text,
+        scale = 1,
     } : {
         frameId?: string;
         text: string
+        scale?: number;
     } = $props();
 </script>
 
-<GenericInstagramFrame frameId={frameId} addBottomFader={false}>
+<GenericInstagramFrame frameId={frameId} addBottomFader={false} scale={scale}>
     <h1>{text}</h1>
 </GenericInstagramFrame>
 

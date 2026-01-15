@@ -5,12 +5,14 @@
 		label = '',
 		checked = $bindable(false),
 		disabled = false,
+		onChange = () => {},
 		helpComponent
 	}: {
 		label?: string;
 		checked?: boolean;
 		disabled?: boolean;
 		helpComponent?: Snippet;
+		onChange?: (e: any) => void;
 	} = $props();
 </script>
 
@@ -20,6 +22,7 @@
 		<input 
 			type="checkbox" 
 			bind:checked 
+			onchange={onChange}
 			{disabled}
 		/>
 		<span class="slider"></span>

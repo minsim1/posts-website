@@ -153,9 +153,16 @@
 		height: 24px;
 	}
 
-	.vote-button.upvote:hover:not(:disabled) {
-		color: var(--color-upvote-hover);
-		transform: translateY(-2px);
+	@media (hover: hover) {
+		.vote-button.upvote:hover:not(:disabled) {
+			color: var(--color-upvote-hover);
+			transform: translateY(-2px);
+		}
+
+		.vote-button.downvote:hover:not(:disabled) {
+			color: var(--color-downvote-hover);
+			transform: translateY(2px);
+		}
 	}
 
 	.vote-button.upvote.active {
@@ -164,11 +171,6 @@
 
 	.vote-button.upvote:active:not(:disabled) {
 		transform: translateY(0);
-	}
-
-	.vote-button.downvote:hover:not(:disabled) {
-		color: var(--color-downvote-hover);
-		transform: translateY(2px);
 	}
 
 	.vote-button.downvote.active {
