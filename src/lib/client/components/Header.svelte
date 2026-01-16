@@ -14,7 +14,7 @@
 	let isMobileMenuOpen = $state(false);
 	let isProfileDropdownOpen = $state(false);
 	let windowWidth = $state(0);
-	let user = $state<SanitizedUser | null>(null);
+	let userData = $state<SanitizedUser | null>(null);
 
 	const navLinks = [
 		// { path: '/', label: 'Landing' },
@@ -56,7 +56,7 @@
 	}
 
 	async function loadUserData(){
-		user = await LocalStorageHelper.GetUserData();
+		userData = await LocalStorageHelper.GetUserData();
 	}
 
 	function closeDropdowns(){
@@ -67,6 +67,7 @@
 	onMount(() => {
 		const unsubscribe = page.subscribe(($page) => {
 			currentPath = $page.url.pathname;
+			loadUserData();
 		});
 
 		loadUserData();
@@ -109,18 +110,18 @@
 		</div>
 
 		<div class="nav-right">
-			{#if user}
-				<span class="username">Welcome, {user.username}</span>
+			{#if userData}
+				<span class="username">Welcome, {userData.username}</span>
 				<div class="profile-section">
 					<button class="profile-button" onclick={toggleProfileDropdown} aria-label="Profile menu">
 						<UserIcon />
 					</button>
 					{#if isProfileDropdownOpen}
 						<div class="profile-dropdown">
-							{#if user.role == "admin"}
+							{#if userData.role == "admin"}
 								<a href="/admin" onclick={closeDropdowns} class="dropdown-item">Admin Panel</a>
 							{/if}
-							{#if user.role == "admin" || user.role == "moderator"}
+							{#if userData.role == "admin" || userData.role == "moderator"}
 								<a href="/moderation" onclick={closeDropdowns} class="dropdown-item">Moderation</a>
 							{/if}
 							<a href="/profile" onclick={closeDropdowns} class="dropdown-item">Profile</a>
