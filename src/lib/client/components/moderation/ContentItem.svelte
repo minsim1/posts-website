@@ -27,6 +27,7 @@
             hidePersonalIcons={true}
             autoOpenComments={false}
             refreshPostsCallback={() => {}}
+            returnLocation={"moderation"}
         />
     </div>
 {:else}
@@ -41,6 +42,7 @@
             showRedirect={true}
             hidePersonalIcons={true}
             deletedCallback={() => {}}
+            returnLocation={"moderation"}
         />
     </div>
 {/if}

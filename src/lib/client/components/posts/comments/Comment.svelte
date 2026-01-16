@@ -22,6 +22,7 @@
         first,
         showModerationRedirect = false,
         showRedirect = false,
+        returnLocation = "",
         hidePersonalIcons = false,
         deletedCallback,
         instagramMode = false
@@ -31,6 +32,7 @@
         last: boolean;
         first: boolean;
         showModerationRedirect: boolean;
+        returnLocation?: string;
         showRedirect?: boolean;
         hidePersonalIcons: boolean;
         deletedCallback: () => void;
@@ -119,11 +121,25 @@
     }
 
     function handleModeration(){
-        goto(`/moderation/comment?id=${comment.commentId}&postId=${postId}`);
+        const url = new URL(window.location.href);
+        url.search = '';
+        url.pathname = '/moderation/comment';
+        url.searchParams.set('id', comment.commentId);
+        url.searchParams.set('postId', postId);
+        if(returnLocation){
+            url.searchParams.set('return_location', returnLocation);
+        }
+        goto(url.toString());
     }
 
     function handleRedirect(){
-        goto(`/posts/${postId}`);
+        const url = new URL(window.location.href);
+        url.search = '';
+        url.pathname = `/posts/${postId}`;
+        if(returnLocation){
+            url.searchParams.set('return_location', returnLocation);
+        }
+        goto(url.toString());
     }
 
     async function loadConfig(){

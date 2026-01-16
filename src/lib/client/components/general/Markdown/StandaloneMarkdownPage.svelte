@@ -1,6 +1,7 @@
 <script lang='ts'>
     import ContentContainer from "../ContentContainer.svelte";
-    import ReturnToPageLink from "../ReturnToPageLink.svelte";
+    import ReturnToPageLink from "../ReturnToPage/ReturnToPageLink.svelte";
+    import SmartReturnLink from "../ReturnToPage/SmartReturnLink.svelte";
     import MarkdownFileRenderer from "./MarkdownFileRenderer.svelte";
 
     let {
@@ -11,7 +12,7 @@
 </script>
 
 <ContentContainer>
-    <ReturnToPageLink text="Return to home page" href="/home"/>
+    <SmartReturnLink />
     <div class="md-container">
         <MarkdownFileRenderer filePath={mdFilePath} />
     </div>

@@ -22,4 +22,4 @@ Contact the administrator of this website => mindaugassimukaitis (at) gmail (dot
 
 ## Important note
 
-Attempting to pen-test this website directly (on post.minde.lol) may result in from suspensions or other forms of banning. [The code is public](https://github.com/minsim1/posts-website), go download it and attempt any attacks on your personal machine.
+Attempting to pen-test this website directly (on post.minde.lol) may result in suspensions or other forms of banning. [The code is public](https://github.com/minsim1/posts-website), go download it and attempt any attacks on your personal machine.

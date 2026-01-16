@@ -8,7 +8,7 @@
     import LocalStorageHelper from '$lib/client/helpers/local-storage';
     import CenterCard from '$lib/client/components/general/CenterCard.svelte';
     import OTCList from '$lib/client/components/user/OTCList.svelte';
-    import ReturnToPageLink from '$lib/client/components/general/ReturnToPageLink.svelte';
+    import ReturnToPageLink from '../../lib/client/components/general/ReturnToPage/ReturnToPageLink.svelte';
 
 	async function handleLogout() {
 		await LogOut();

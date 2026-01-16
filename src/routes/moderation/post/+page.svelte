@@ -17,7 +17,8 @@
     import { showNotification } from "$lib/client/stores/notifications";
 	import LastSuspensionCheck from "$lib/client/components/moderation/LastSuspensionCheck.svelte";
 	import CenterCard from "$lib/client/components/general/CenterCard.svelte";
-    import ReturnToPageLink from "$lib/client/components/general/ReturnToPageLink.svelte";
+    import ReturnToPageLink from "../../../lib/client/components/general/ReturnToPage/ReturnToPageLink.svelte";
+    import SmartReturnLink from "$lib/client/components/general/ReturnToPage/SmartReturnLink.svelte";
 
 	
 	interface UserData {
@@ -196,19 +197,19 @@
 	</CenterCard>
 {:else if error}
 	<CenterCard class="error-card">
-		<ReturnToPageLink href="/home" text="Return to home" />
+		<SmartReturnLink />
 		<h2>There was an error</h2>
 		<p>{error}</p>
 	</CenterCard>
 {:else if success}
 	<CenterCard>
-		<ReturnToPageLink href="/home" text="Return to home" />
+		<SmartReturnLink />
 		<h2>Success</h2>
 		<p>{success}</p>
 	</CenterCard>
 {:else if post}
 	<CenterCard>
-		<ReturnToPageLink href="/home" text="Return to home" />
+		<SmartReturnLink />
 		<h2>Moderate Post</h2>
 		<UntouchableContentContainer>
 			<Post

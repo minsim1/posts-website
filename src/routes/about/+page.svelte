@@ -1,7 +1,7 @@
 <script lang='ts'>
 	import ContentContainer from '$lib/client/components/general/ContentContainer.svelte';
     import MarkdownFileRenderer from '$lib/client/components/general/Markdown/MarkdownFileRenderer.svelte';
-    import ReturnToPageLink from '$lib/client/components/general/ReturnToPageLink.svelte';
+    import ReturnToPageLink from '../../lib/client/components/general/ReturnToPage/ReturnToPageLink.svelte';
     
     interface SelectionButton{
         text: string;

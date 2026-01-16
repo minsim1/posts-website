@@ -4,7 +4,7 @@
 	import { goto } from "$app/navigation";
 	import ContentContainer from "$lib/client/components/general/ContentContainer.svelte";
 	import CenterCard from "$lib/client/components/general/CenterCard.svelte";
-	import ReturnToPageLink from "$lib/client/components/general/ReturnToPageLink.svelte";
+	import ReturnToPageLink from "../../../lib/client/components/general/ReturnToPage/ReturnToPageLink.svelte";
 	import Post from "$lib/client/components/posts/Post.svelte";
 	import LoadingIcon from "$lib/client/components/icons/LoadingIcon.svelte";
 	import LocalStorageHelper from "$lib/client/helpers/local-storage";
@@ -14,6 +14,7 @@
 	import { LogOut } from "$lib/helpers/logout";
 	import Switch from "$lib/client/components/inputs/Switch.svelte";
 	import HelpButton from "$lib/client/components/general/HelpButton.svelte";
+    import SmartReturnLink from "$lib/client/components/general/ReturnToPage/SmartReturnLink.svelte";
 
 	interface UserData {
 		id: string;
@@ -110,7 +111,7 @@
 	<CenterCard>
 		{#snippet children()}
 			<div class="error-container">
-                <ReturnToPageLink href="/home" text="Return to home" />
+                <SmartReturnLink />
 				<h2>Error</h2>
 				<p class="error-message">{error}</p>
 			</div>
@@ -120,7 +121,7 @@
 	<ContentContainer>
         <div class="top-bar-container">
             <div class="redirect-container">
-                <ReturnToPageLink href="/home" text="Return to home" />
+                <SmartReturnLink />
             </div>
             <div class="show-personal-container">
                 <Switch 

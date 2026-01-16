@@ -12,7 +12,7 @@
 	import AdminUser from "$lib/client/components/admin/users/AdminUser.svelte";
     import CenterCard from "$lib/client/components/general/CenterCard.svelte";
     import Button from "$lib/client/components/inputs/Button.svelte";
-    import ReturnToPageLink from "$lib/client/components/general/ReturnToPageLink.svelte";
+    import ReturnToPageLink from "../../../lib/client/components/general/ReturnToPage/ReturnToPageLink.svelte";
 
 	interface UserData {
 		id: string;

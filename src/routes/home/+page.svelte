@@ -94,7 +94,12 @@
 		{#if posts.length == 0}
 			<p class="no-posts-text">No recent posts found :/ Create some yourself!</p>
 		{:else}
-			<Posts posts={posts} showModerationRedirect={user ? user.role == "moderator" || user.role == "admin" : false} postsRefreshCallback={fetchPosts}/>
+			<Posts
+				posts={posts}
+				showModerationRedirect={user ? user.role == "moderator" || user.role == "admin" : false}
+				postsRefreshCallback={fetchPosts}
+				returnLocation="home"
+			/>
 		{/if}
 	{/if}
 </ContentContainer>
