@@ -14,20 +14,32 @@ MongoDB is used for data storage. Since transactions are needed for this project
 
 ### Environment variables
 
-*Only used in local development purposes, overridden in production by docker-compose.yml*
+**Only used in local development purposes, overridden in production by docker-compose.yml**
 `MONGODB_URI=mongodb://user:password@host:27017/db-name?authSource=admin`
 
+**Used in both production and development environments**
 `JWT_SECRET=a-long-string`
+
 `PASSWORD_HASHING_ROUNDS=12`
+
 `DEV=true`
+
 `DOMAIN=https://production-domain.com`
+
 `INSTAGRAM_API_KEY=your-instagram-api-key` *Good luck getting this :), the process is lengthy and annoying*
+
 `INSTAGRAM_USER_ID=your-instagram-user-id`
 
-*Environment variables that only used in production*
+`PUBLIC_INSTAGRAM_HANDLE=your-instagram-handle`
+
+**Environment variables that only used in production**
+
 `PROD_OUTPUT_PORT=5000` *The port that will be exposed when compiling the project in production*
+
 `MONGODB_REPLICA_SET_KEY=replicasetkey123`
+
 `MONGODB_ROOT_PASSWORD=rootpassword123`
+
 `MONGODB_DB_NAME=posts-dev`
 
 ### Running the code
