@@ -737,7 +737,6 @@ export default class UserManager {
 		} catch (error: any) {
 			session.endSession();
 
-			console.log("Error message:", error.message);
 			if (error.message === "user_not_found") {
 				return { success: false, error: "user_not_found" } as result;
 			}

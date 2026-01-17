@@ -23,6 +23,7 @@ services:
       - DOMAIN=${DOMAIN}
       - INSTAGRAM_API_KEY=${INSTAGRAM_API_KEY}
       - INSTAGRAM_USER_ID=${INSTAGRAM_USER_ID}
+      - PUBLIC_INSTAGRAM_HANDLE=${PUBLIC_INSTAGRAM_HANDLE}
 
 volumes:
   posts_mongodb_data:

@@ -28,12 +28,14 @@
         instagramMode = false,
         forceComments = [],
         allowedToComment = true,
+        returnLocation = '',
         initialCommentNumShowOverride,
     }: { 
         post: SanitizedPost;
         initialCommentNumShowOverride?: number;
         allowedToComment?: boolean;
         forceComments?: SanitizedComment[];
+        returnLocation? : string;
         hidePersonalIcons?: boolean;
         showModerationRedirect?: boolean;
         showRedirect?: boolean;
@@ -120,19 +122,32 @@
                     return;
                 }
 
-                showNotification('error', STRINGS.generic.unknownError)
+                showNotification('error', STRINGS.generic.unknownError + ` (${response.status})`);
             }else{
-                showNotification('error', STRINGS.generic.unknownError)
+                showNotification('error', STRINGS.generic.unknownError + ` (${response.status})`);
             }
         }
     }
 
     function handleModeration(){
-        goto(`/moderation/post?id=${post.postId}`);
+        const url = new URL(window.location.href);
+        url.search = '';
+        url.pathname = `/moderation/post`;
+        url.searchParams.set('id', post.postId);
+        if(returnLocation) {
+            url.searchParams.set('return_location', returnLocation);
+        }
+        goto(url.toString());
     }
 
     function handleRedirect(){
-        goto(`/posts/${post.postId}`);
+        const url = new URL(window.location.href);
+        url.search = '';
+        url.pathname = `/posts/${post.postId}`;
+        if (returnLocation) {
+            url.searchParams.set('return_location', returnLocation);
+        }
+        goto(url.toString());
     }
 
     function handleVoteRefreshCallback(){
@@ -252,6 +267,7 @@
                 commentDeletedCallback={handleCommentDeletion}
                 refreshPostsCallback={refreshPostsCallback}
                 instagramMode={instagramMode}
+                returnLocation={returnLocation}
             />
         </div>
     {/if}

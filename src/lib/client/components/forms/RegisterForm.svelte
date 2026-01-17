@@ -103,7 +103,6 @@
 			return;
 		}else{
 			loading = false;
-			console.log(response);
 			if(!response.error){
 				error = STRINGS.generic.unknownError + ` (${response.status})`;
 				return;
@@ -200,7 +199,10 @@
 
 {#snippet legalConfirm()}
 	<p style="font-size: 0.9rem;">
-		By registering, you agree to the <a href="/legal/terms-of-service" target="_blank">Terms of Service</a> and <a href="/legal/privacy-policy" target="_blank">Privacy Policy</a>.
+		By registering, you agree to the
+		<a href="/legal/terms-of-service?return_location=registration" target="_blank">Terms of Service</a>
+		and
+		<a href="/legal/privacy-policy?return_location=registration" target="_blank">Privacy Policy</a>.
 	</p>
 {/snippet}
 

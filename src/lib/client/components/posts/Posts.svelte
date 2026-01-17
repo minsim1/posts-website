@@ -12,11 +12,13 @@
     let { 
         posts = $bindable([]),
         showModerationRedirect = false,
+        returnLocation = '',
         // sortType = $bindable<"recent" | "popular">("recent"),
         postsRefreshCallback
     }: { 
         posts: SanitizedPost[];
         showModerationRedirect?: boolean;
+        returnLocation?: string;
         postsRefreshCallback: () => void;
         // sortType: "recent" | "popular";
     } = $props();
@@ -81,6 +83,7 @@
     {#each posts as post, index (post.postId)}
         <Post 
             post={post}
+            returnLocation={returnLocation}
             hidePersonalIcons={hidePersonalIcons}
             showModerationRedirect={showModerationRedirect}
             refreshPostsCallback={postsRefreshCallback}

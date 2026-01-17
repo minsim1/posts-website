@@ -14,20 +14,32 @@ MongoDB is used for data storage. Since transactions are needed for this project
 
 ### Environment variables
 
-*Only used in local development purposes, overridden in production by docker-compose.yml*
+**Only used in local development purposes, overridden in production by docker-compose.yml**
 `MONGODB_URI=mongodb://user:password@host:27017/db-name?authSource=admin`
 
+**Used in both production and development environments**
 `JWT_SECRET=a-long-string`
+
 `PASSWORD_HASHING_ROUNDS=12`
+
 `DEV=true`
+
 `DOMAIN=https://production-domain.com`
+
 `INSTAGRAM_API_KEY=your-instagram-api-key` *Good luck getting this :), the process is lengthy and annoying*
+
 `INSTAGRAM_USER_ID=your-instagram-user-id`
 
-*Environment variables that only used in production*
+`PUBLIC_INSTAGRAM_HANDLE=your-instagram-handle`
+
+**Environment variables that only used in production**
+
 `PROD_OUTPUT_PORT=5000` *The port that will be exposed when compiling the project in production*
+
 `MONGODB_REPLICA_SET_KEY=replicasetkey123`
+
 `MONGODB_ROOT_PASSWORD=rootpassword123`
+
 `MONGODB_DB_NAME=posts-dev`
 
 ### Running the code
@@ -44,19 +56,22 @@ To run a production instance of this project, docker is required. Run the comman
 
 # Project funcionality description
 
-## Anonymity
+## Anonymity, deletions and suspensions
 
 ### Endpoint information
-For any user, the `/api/posts` (GET) endpoint returns a list of sanitized posts. These posts do not contain the user ID of the author, only the username ("Anonymous" if posted anonymously), and a boolean value, signifying if the content was made by the user calling the endpoint. This endpoint works even for non-authenticated users, for which the aforementioned boolean value will always be false.
+For any user, the `/api/posts` (GET) endpoint returns a list of sanitized posts. These posts do not contain the user ID of the author, but they do contain the username of the poster ("Anonymous" if posted anonymously), the author role ("Anonymous" ir posted anonymously), and a boolean value signifying if the content was made by the user calling the endpoint. This endpoint works even for non-authenticated users, for which the aforementioned boolean value will always be false.
 
 ### Moderator data access
-Moderators can request for any piece of content's (post or comment) author last suspension. This reveals the last suspension timestamp, duration and reason. The suspension might not be active, even if by the returned values it is indicated that it is, because the administrator has the ability to lift any active suspension, but that does not delete the suspension history. For content which does not have an associated user ID, a message will appear that the content is without an associated author. This is only possible if the content was posted anonymously.
+Moderators can request for any piece of content's (post or comment) author's last suspension. This reveals the last suspension timestamp, duration and reason. The suspension might not be active, even if by the returned values it is indicated that it is, because the administrator has the ability to lift any active suspension, but that does not delete the suspension from suspension history. For content which does not have an associated user ID, a message will appear that the content is without an associated author. This is only possible if the content was posted anonymously and the administrator has severed the connection between the user and the content (see below).
 
 ### Administrator data expunging
-The administrator has the ability to delete (expunge) author user ID data from posts and comments, given that they are older than the set "max delete lifetime", which is a config value the administrator controls. 
+The administrator has the ability to delete (expunge) author user ID data from **anonymous** posts and comments, given that they are older than the set "max delete lifetime", which is a config value the administrator controls. 
 
-## Deletion and suspension
-A moderator or administrator has the ability to delete any piece of content (post or comment), given that it isn't older than the admin set "max delete lifetime". Along with content deletion, moderators and administrators have the ability to suspend the user by specifying a duration and (optionally) a reason. If the suspension given is shorter than the currently active one, a message will be displayed that the suspension was not applied, though the deletion still happens. If no user is "attached" to a piece of content, the deletion still happens, but a message is shown that a suspension could not be applied (since there is no associated user to apply it to).
+### Deletion
+A moderator or administrator has the ability to delete any piece of content (post or comment), given that it isn't older than the admin set "max delete lifetime".
+
+### Suspensions and anonimity
+Along with content deletion, moderators and administrators have the ability to suspend the user by specifying a duration and (optionally) a reason. If the suspension given is shorter than the currently active one, a message will be displayed that the suspension was not applied, though the deletion still happens. If no user is "attached" to a piece of content, the deletion still happens, but a message is shown that a suspension could not be applied (since there is no associated user to apply it to). If a moderator attempts to delete a piece of anonymous content made by another moderator or an administrator and also tries to suspend the author, the deletion happens, the suspension does not, but no error or information message is shown in order to not reveal the authors role.
 
 ## Moderator accountability
 The administrator of the site has the ability to see the latest moderation actions (suspensions and content deletions) of moderators. If any malicious activity is detected, the administrator has the ability to suspend any moderator or delete their account.

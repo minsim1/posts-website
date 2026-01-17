@@ -24,6 +24,7 @@
         hidePersonalIcons = false,
         postId,
         allowCommentCreation = true,
+        returnLocation = "",
         commentCreatedCallback,
         commentDeletedCallback,
         refreshPostsCallback = () => {},
@@ -35,6 +36,7 @@
         hidePersonalIcons: boolean;
         postId: string;
         allowCommentCreation?: boolean;
+        returnLocation?: string;
         commentCreatedCallback?: () => void;
         commentDeletedCallback: () => void;
         refreshPostsCallback?: () => void;
@@ -67,6 +69,7 @@
             postId={postId}
             deletedCallback={commentDeletedCallback}
             instagramMode={instagramMode}
+            returnLocation={returnLocation}
         />
     {/each}
     {#if !allCommentsAreShown && !instagramMode}

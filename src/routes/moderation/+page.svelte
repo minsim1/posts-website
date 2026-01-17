@@ -10,9 +10,10 @@
     import { STRINGS } from "$lib/client/strings/main";
     import { showNotification } from "$lib/client/stores/notifications";
     import CenterCard from "$lib/client/components/general/CenterCard.svelte";
-    import ReturnToPageLink from "$lib/client/components/general/ReturnToPageLink.svelte";
+    import ReturnToPageLink from "../../lib/client/components/general/ReturnToPage/ReturnToPageLink.svelte";
     import ContentItem from "$lib/client/components/moderation/ContentItem.svelte";
     import { CONFIG } from "../../public-config";
+    import SmartReturnLink from "$lib/client/components/general/ReturnToPage/SmartReturnLink.svelte";
 
     interface UserData {
         id: string;
@@ -126,7 +127,7 @@
 <ContentContainer>
     <div class="moderation-page">
         <div class="header">
-            <ReturnToPageLink href="/home" text="Return to Home" />
+            <SmartReturnLink />
             <h1>Recent Content Moderation</h1>
             <p class="description">
                 Showing content from the last {CONFIG.moderation.defaultContentFetchRange / (24 * 60 * 60 * 1000)} days

@@ -81,17 +81,19 @@
         gap: 0.5rem;
     }
 
-    .comments-button:hover,
-    .redirect-button:hover,
-    .moderation-button:hover {
-        color: var(--color-icon-action-hover);
-        background-color: var(--color-bg-light);
-    }
+    @media (hover: hover) {
+        .comments-button:hover,
+        .redirect-button:hover,
+        .moderation-button:hover {
+            color: var(--color-icon-action-hover);
+            background-color: var(--color-bg-light);
+        }
 
-    .delete-button:hover {
-        color: var(--color-error);
-        background-color: var(--color-error-bg);
-    }
+        .delete-button:hover {
+            color: var(--color-error);
+            background-color: var(--color-error-bg);
+        }
+	}
 
     .comments-count {
         font-size: 0.9rem;

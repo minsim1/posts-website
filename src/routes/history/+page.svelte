@@ -7,17 +7,19 @@
     import LoadingIcon from "$lib/client/components/icons/LoadingIcon.svelte";
     import CenterCard from "$lib/client/components/general/CenterCard.svelte";
     import { API } from "$lib/api/api";
-    import type { SanitizedPost } from "$lib/api/types";
+    import type { SanitizedPost, SanitizedUser } from "$lib/api/types";
     import { showNotification } from "$lib/client/stores/notifications";
     import { STRINGS } from "$lib/client/strings/main";
     import { LogOut } from "$lib/helpers/logout";
-    import ReturnToPageLink from "$lib/client/components/general/ReturnToPageLink.svelte";
+    import ReturnToPageLink from "../../lib/client/components/general/ReturnToPage/ReturnToPageLink.svelte";
     import Posts from "$lib/client/components/posts/Posts.svelte";
+    import LocalStorageHelper from "$lib/client/helpers/local-storage";
 
     let selectedDate = $state("");
     let loading = $state(true);
     let posts = $state<SanitizedPost[]>([]);
     let error = $state("");
+    let user = $state<SanitizedUser | null>(null);
 
     function dateToYYYYMMDD(date: Date): string {
         const year = date.getFullYear();
@@ -86,6 +88,8 @@
     onMount(() => {
         loading = true;
 
+        LocalStorageHelper.GetUserData().then(data => user = data);
+
         const urlDate = $page.url.searchParams.get('date');
         
         if (urlDate && /^\d{4}-\d{2}-\d{2}$/.test(urlDate)) {
@@ -135,6 +139,8 @@
                 <Posts
                     {posts}
                     postsRefreshCallback={handlePostRefresh}
+                    returnLocation="history"
+                    showModerationRedirect={user ? user.role === 'moderator' || user.role === 'admin' : false}
                 />
             </div>
         {/if}
