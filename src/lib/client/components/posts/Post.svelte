@@ -60,8 +60,12 @@
         config ? config.limits.maxPostAgeToComment + post.createdAt > Date.now() && allowedToComment : false
     );
 
+    let shouldLoadComments = $state(false);
+
     let deleteModalOpen = $state(false);
     let deleteLoading = $state(false);
+
+    let postElement: HTMLElement;
 
     async function loadConfig(){
         config = await LocalStorageHelper.GetServerConfigData();
@@ -70,7 +74,7 @@
     $effect(() => {
         currentVote = post.personalUserVote || null;
         score = post.score;
-        if(post.commentsCount > 0 && !commentsInitiallyLoaded && autoOpenComments){
+        if(post.commentsCount > 0 && !commentsInitiallyLoaded && autoOpenComments && shouldLoadComments){
             commentsInitiallyLoaded = true;
             fetchCommentsAndOpen();
         }
@@ -210,12 +214,40 @@
         }
     }
 
-    onMount(async () => {
-        await loadConfig();
+    let observer: IntersectionObserver | null = null;
+
+    function unsubscribeFromShowCommentsChecker(){
+        if(observer){
+            observer.disconnect();
+            observer = null;
+        }
+    }
+
+    onMount(() => {
+        loadConfig();
+
+        if (!postElement) return;
+
+        observer = new IntersectionObserver((entities)=>{
+            entities.forEach(entity => {
+                if(entity.isIntersecting){
+                    shouldLoadComments = true;
+                    unsubscribeFromShowCommentsChecker();
+                }
+            });
+        },{
+            rootMargin: '400px'
+        })
+
+        observer.observe(postElement)
+
+        return () => {
+            unsubscribeFromShowCommentsChecker();
+        }
     });
 </script>
 
-<div class="container">
+<div class="container" bind:this={postElement}>
     <div class="vote-and-post">
         <div class="vote-section">
             <Vote postId={post.postId} bind:currentVote bind:score refreshCallback={handleVoteRefreshCallback} instagramMode={instagramMode} />

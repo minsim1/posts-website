@@ -242,7 +242,7 @@
             }
         }else{
             // Just use sorted posts as is
-            const posts = sortedPosts.slice(0, parseInt(maxNumOfImages)).map(post => {
+            const posts = sortedPosts.slice(0, effectiveLeftImageSlots).map(post => {
                 return {type: "post", post} as InstagramImageContent;
             });
             tempInstagramImages = tempInstagramImages.concat(posts);

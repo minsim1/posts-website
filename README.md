@@ -4,8 +4,11 @@
 
 ### Versions
 node => 24.11.0
+
 ts-node => 10.9.2
+
 MongoDB => 8.0.17
+
 Docker => 29.1.4, build 0e6fee6
 
 ### Database
@@ -53,6 +56,14 @@ There currently is only one test file, which tests user interaction limits impos
 ### Production
 
 To run a production instance of this project, docker is required. Run the command `docker compose up --build` to create the containers. The exposed website port is defined in the environment variables (see above).
+
+Also, if a proxy like **NGINX** is used, make sure it can serve large requests, as visiting `/posts/[post_id]` can sometimes fail to load the page. The following configuration works fine:
+
+```
+proxy_buffer_size          128k;
+proxy_buffers              4 256k;
+proxy_busy_buffers_size    256k;
+```
 
 # Project funcionality description
 
