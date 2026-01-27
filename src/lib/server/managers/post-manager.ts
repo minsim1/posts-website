@@ -354,7 +354,7 @@ export default class PostManager {
 					}
 				}
 
-				if(deletorIsAuthor){
+				if(!deletorIsAuthor){
 					// Post deleted by someone other than the author, add moderation log
 					await UserManager.AddModerationLogToUser(
 						{
