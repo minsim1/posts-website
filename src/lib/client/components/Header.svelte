@@ -9,12 +9,14 @@
     import LocalStorageHelper from '../helpers/local-storage';
     import type { SanitizedUser } from '$lib/api/types';
     import { LogOut } from '$lib/helpers/logout';
+    import LoadingIcon from './icons/LoadingIcon.svelte';
 
 	let currentPath = $state('');
 	let isMobileMenuOpen = $state(false);
 	let isProfileDropdownOpen = $state(false);
 	let windowWidth = $state(0);
 	let userData = $state<SanitizedUser | null>(null);
+	let loadingUserData = $state(true);
 
 	const navLinks = [
 		// { path: '/', label: 'Landing' },
@@ -56,7 +58,9 @@
 	}
 
 	async function loadUserData(){
+		loadingUserData = true;
 		userData = await LocalStorageHelper.GetUserData();
+		loadingUserData = false;
 	}
 
 	function closeDropdowns(){
@@ -67,7 +71,7 @@
 	onMount(() => {
 		const unsubscribe = page.subscribe(($page) => {
 			currentPath = $page.url.pathname;
-			loadUserData();
+			// loadUserData();
 		});
 
 		loadUserData();
@@ -110,7 +114,9 @@
 		</div>
 
 		<div class="nav-right">
-			{#if userData}
+			{#if loadingUserData}
+				<LoadingIcon size={32}/>
+			{:else if userData}
 				<span class="username">Welcome, {userData.username}</span>
 				<div class="profile-section">
 					<button class="profile-button" onclick={toggleProfileDropdown} aria-label="Profile menu">
