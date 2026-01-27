@@ -4,8 +4,11 @@
 
 ### Versions
 node => 24.11.0
+
 ts-node => 10.9.2
+
 MongoDB => 8.0.17
+
 Docker => 29.1.4, build 0e6fee6
 
 ### Database
