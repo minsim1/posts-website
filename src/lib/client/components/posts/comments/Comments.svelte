@@ -7,15 +7,7 @@
     import { CONFIG } from "../../../../../public-config";
     import Button from "../../inputs/Button.svelte";
 
-    let user = $state<SanitizedUser | null>(null);
-
-    async function loadUserData() {
-        user = await LocalStorageHelper.GetUserData();
-    }
-
-    onMount(async () => {
-        await loadUserData();
-    });
+    let user = $state<SanitizedUser | null>(null);    
 
     let { 
         comments = $bindable([]),
@@ -24,6 +16,7 @@
         hidePersonalIcons = false,
         postId,
         allowCommentCreation = true,
+        fetchUserDataAndConfig = true,
         returnLocation = "",
         commentCreatedCallback,
         commentDeletedCallback,
@@ -37,11 +30,21 @@
         postId: string;
         allowCommentCreation?: boolean;
         returnLocation?: string;
+        fetchUserDataAndConfig?: boolean;
         commentCreatedCallback?: () => void;
         commentDeletedCallback: () => void;
         refreshPostsCallback?: () => void;
         instagramMode?: boolean;
     } = $props();
+
+    async function loadUserData() {
+        if(!fetchUserDataAndConfig) return;
+        user = await LocalStorageHelper.GetUserData();
+    }
+
+    onMount(async () => {
+        await loadUserData();
+    });
 
     // svelte-ignore state_referenced_locally
         let numOfCommentToShow = $state(initialCommentNumShowOverride ?? CONFIG.comments.initialCountToShow);

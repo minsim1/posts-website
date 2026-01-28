@@ -1,5 +1,5 @@
 <script lang='ts'>
-    import type { SanitizedPost } from "$lib/api/types";
+    import { type SanitizedUser, type SanitizedPost } from "$lib/api/types";
     import Post from "./Post.svelte";
     import RadioGroup from "../inputs/RadioGroup.svelte";
     import Switch from "../inputs/Switch.svelte";
@@ -8,6 +8,7 @@
     import { page } from "$app/state";
     import { goto } from "$app/navigation";
     import ShieldIcon from "../icons/ShieldIcon.svelte";
+    import LocalStorageHelper from "$lib/client/helpers/local-storage";
 
     let { 
         posts = $bindable([]),
@@ -22,6 +23,12 @@
         postsRefreshCallback: () => void;
         // sortType: "recent" | "popular";
     } = $props();
+
+    let userData = $state<SanitizedUser | null>(null);
+
+    async function loadUserData(){
+        userData = await LocalStorageHelper.GetUserData();
+    }
 
     let hidePersonalIcons = $state(true);
 
@@ -60,6 +67,7 @@
         }
         
         sortPostsByType();
+        loadUserData();
     });
 </script>
 
@@ -74,11 +82,13 @@
             ]}
             onchange={sortTypeChanged}
         />
-        <Switch 
-            label="Privacy"
-            bind:checked={hidePersonalIcons}
-            helpComponent={personalIconsExplainer}
-        />
+        {#if userData}
+            <Switch 
+                label="Privacy"
+                bind:checked={hidePersonalIcons}
+                helpComponent={personalIconsExplainer}
+            />
+        {/if}
     </div>
     {#each posts as post, index (post.postId)}
         <Post 

@@ -124,11 +124,13 @@
                 <SmartReturnLink />
             </div>
             <div class="show-personal-container">
-                <Switch 
-                    label="Privacy"
-                    bind:checked={hidePersonalIcons}
-                    helpComponent={personalIconsExplainer}
-                />
+				{#if user}
+					<Switch 
+						label="Privacy"
+						bind:checked={hidePersonalIcons}
+						helpComponent={personalIconsExplainer}
+					/>
+				{/if}
             </div>
         </div>
         <div class="post-container">
