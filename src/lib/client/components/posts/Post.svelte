@@ -28,6 +28,7 @@
         instagramMode = false,
         forceComments = [],
         allowedToComment = true,
+        fetchUserDataAndConfig = true,
         returnLocation = '',
         initialCommentNumShowOverride,
     }: { 
@@ -42,6 +43,7 @@
         refreshPostsCallback: () => void;
         onDeleteCallback?: () => void;
         autoOpenComments?: boolean;
+        fetchUserDataAndConfig?: boolean;
         showComments?: boolean;
         instagramMode?: boolean;
     } = $props();
@@ -68,6 +70,7 @@
     let postElement: HTMLElement;
 
     async function loadConfig(){
+        if(!fetchUserDataAndConfig) return;
         config = await LocalStorageHelper.GetServerConfigData();
     }
 
@@ -298,6 +301,7 @@
                 commentCreatedCallback={handleCommentCreation}
                 commentDeletedCallback={handleCommentDeletion}
                 refreshPostsCallback={refreshPostsCallback}
+                fetchUserDataAndConfig={fetchUserDataAndConfig}
                 instagramMode={instagramMode}
                 returnLocation={returnLocation}
             />

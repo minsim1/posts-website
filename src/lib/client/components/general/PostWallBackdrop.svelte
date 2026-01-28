@@ -226,6 +226,7 @@
         forceComments={data.comments}
         hidePersonalIcons={true}
         allowedToComment={false}
+        fetchUserDataAndConfig={false}
     />
     <!-- {#each data.comments as comment}
         Comment component can be added here if needed
