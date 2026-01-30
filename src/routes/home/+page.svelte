@@ -12,6 +12,7 @@
     import { STRINGS } from '$lib/client/strings/main';
     import Alert from '$lib/client/components/Alert.svelte';
     import LoadingIcon from '$lib/client/components/icons/LoadingIcon.svelte';
+    import { GetApprxTimeDifferenceString } from '$lib/client/helpers/time';
 
 	interface UserData {
 		id: string;
@@ -92,14 +93,17 @@
 		</p>
 	{:else}
 		{#if posts.length == 0}
-			<p class="no-posts-text">No recent posts found :/ Create some yourself!</p>
+			<p class="no-posts-text">No posts found from the last <b>{GetApprxTimeDifferenceString(CONFIG.posts.query.timeframeToQuery, 0)}</b> :/</p>
+			<p class="no-posts-text">Check <a href="/history">history</a> or create some yourself!</p>
 		{:else}
+			<p class="post-timeframe-text">Here are the posts from the last <b>{GetApprxTimeDifferenceString(CONFIG.posts.query.timeframeToQuery, 0)}</b></p>
 			<Posts
 				posts={posts}
 				showModerationRedirect={user ? user.role == "moderator" || user.role == "admin" : false}
 				postsRefreshCallback={fetchPosts}
 				returnLocation="home"
 			/>
+			<p class="see-history-text">See what people have written previously <a href="/history">here</a></p>
 		{/if}
 	{/if}
 </ContentContainer>
@@ -118,10 +122,26 @@
 	}
 
 	.no-posts-text{
-		margin-top: 2rem;
+		margin-top: 1rem;
 		font-size: 1rem;
 		font-style: italic;
 		color: var(--color-text-secondary);
+		padding: 0;
+		text-align: center;
+	}
+
+	.post-timeframe-text{
+		font-size: 1rem;
+		color: var(--color-text-secondary);
+		margin-bottom: 0.5rem;
+		padding: 0 1rem;
+		text-align: center;
+	}
+
+	.see-history-text{
+		font-size: 1rem;
+		color: var(--color-text-secondary);
+		margin: 0.5rem 0;
 		padding: 0 1rem;
 		text-align: center;
 	}
