@@ -15,7 +15,7 @@ export const CONFIG = {
     posts:{
         query:{
             maxDateRange: 1000 * 60 * 60 * 24 * 7, // 7 days
-            timeframeToQuery: 1000 * 60 * 60 * 24 * 3 // 3 days
+            timeframeToQuery: 1000 * 60 * 60 * 24 * 4 // 4 days
         }
     },
     comments:{

@@ -68,6 +68,11 @@
 		isMobileMenuOpen = false;
 	}
 
+	async function loginPressed(){
+		loadUserData();
+		goto('/login');
+	}
+
 	onMount(() => {
 		const unsubscribe = page.subscribe(($page) => {
 			currentPath = $page.url.pathname;
@@ -137,7 +142,7 @@
 				</div>
 			{:else}
 				<div class="auth-buttons">
-					<Button type="button" variant="secondary" fullWidth={false} on:click={() => goto('/login')}>
+					<Button type="button" variant="secondary" fullWidth={false} on:click={loginPressed}>
 						Login
 					</Button>
 					<Button type="button" variant="primary" fullWidth={false} on:click={() => goto('/register')}>
