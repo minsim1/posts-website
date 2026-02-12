@@ -85,6 +85,34 @@
         }
     }
 
+    function goToPreviousDay() {
+        const [year, month, day] = selectedDate.split('-').map(Number);
+        const currentDate = new Date(year, month - 1, day);
+        currentDate.setDate(currentDate.getDate() - 1);
+        const newDate = dateToYYYYMMDD(currentDate);
+        selectedDate = newDate;
+        goto(`/history?date=${newDate}`, { replaceState: true });
+        loadPosts(newDate);
+    }
+
+    function goToNextDay() {
+        const [year, month, day] = selectedDate.split('-').map(Number);
+        const currentDate = new Date(year, month - 1, day);
+        currentDate.setDate(currentDate.getDate() + 1);
+        const newDate = dateToYYYYMMDD(currentDate);
+        selectedDate = newDate;
+        goto(`/history?date=${newDate}`, { replaceState: true });
+        loadPosts(newDate);
+    }
+
+    function isNextDayInFuture(): boolean {
+        const [year, month, day] = selectedDate.split('-').map(Number);
+        const currentDate = new Date(year, month - 1, day);
+        currentDate.setDate(currentDate.getDate() + 1);
+        const today = new Date();
+        return currentDate > today;
+    }
+
     onMount(() => {
         loading = true;
 
@@ -114,15 +142,32 @@
     <ReturnToPageLink text="Back to Home" href="/home"/>
     <div class="history-page">
         <div class="date-selector">
-            <label for="date-input">Select Date:</label>
-            <input 
-                id="date-input"
-                type="date" 
-                value={selectedDate}
-                oninput={handleDateChange}
-                onchange={handleDateChange}
-                max={dateToYYYYMMDD(new Date())}
-            />
+            <label for="date-input" class="date-label">Select Date:</label>
+            <div class="date-controls">
+                <button 
+                    class="nav-button"
+                    onclick={goToPreviousDay}
+                    aria-label="Go to previous day"
+                >
+                    {"<="}
+                </button>
+                <input 
+                    id="date-input"
+                    type="date" 
+                    value={selectedDate}
+                    oninput={handleDateChange}
+                    onchange={handleDateChange}
+                    max={dateToYYYYMMDD(new Date())}
+                />
+                <button 
+                    class="nav-button"
+                    onclick={goToNextDay}
+                    disabled={isNextDayInFuture()}
+                    aria-label="Go to next day"
+                >
+                    {"=>"}
+                </button>
+            </div>
             <p class="posts-count">{posts.length} post{posts.length !== 1 ? 's' : ''} found</p>
         </div>
 
@@ -133,7 +178,7 @@
         {:else if error}
             <p class="error-message">{error}</p>
         {:else if posts.length === 0}
-            <p>No posts found for this date :(</p>
+            <!-- <p>No posts found for this date :(</p> -->
         {:else}
             <div class="posts-container">
                 <Posts
@@ -148,6 +193,10 @@
 </ContentContainer>
 
 <style>
+    .date-label{
+        text-align: center;
+    }
+
     .history-page {
         width: 100%;
         margin: 0 auto;
@@ -161,13 +210,47 @@
         flex-direction: column;
         gap: 0.5rem;
         margin-bottom: 2rem;
-        max-width: 300px;
-        min-width: 200px;
+        max-width: 400px;
+        min-width: 250px;
     }
 
     .date-selector label {
         font-weight: 600;
         font-size: 1rem;
+    }
+
+    .date-controls {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .nav-button {
+        padding: 0.5rem 0.75rem;
+        font-size: 1.2rem;
+        border: 1px solid var(--color-border);
+        border-radius: 4px;
+        background-color: var(--color-bg-light);
+        color: var(--color-text);
+        cursor: pointer;
+        transition: background-color 0.2s, border-color 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 40px;
+        height: 40px;
+    }
+
+    .nav-button:hover:not(:disabled) {
+        background-color: var(--color-primary);
+        color: white;
+        border-color: var(--color-primary);
+    }
+
+    .nav-button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
     }
 
     .date-selector input[type="date"] {
@@ -177,6 +260,8 @@
         border-radius: 4px;
         background-color: var(--color-bg-light);
         color: var(--color-text);
+        flex: 1;
+        min-width: 150px;
     }
 
     .date-selector input[type="date"]:focus {
@@ -206,5 +291,6 @@
         color: var(--color-text-secondary);
         font-style: italic;
         margin: 0 0 1rem 0;
+        text-align: center;
     }
 </style>
