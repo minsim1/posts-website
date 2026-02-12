@@ -11,6 +11,8 @@ MongoDB => 8.0.17
 
 Docker => 29.1.4, build 0e6fee6
 
+Docker compose version => 5.0.2
+
 ### Database
 
 MongoDB is used for data storage. Since transactions are needed for this project, the database should be a replica set (one instance is enough). Currently, no in-memory database solution is present within the project for development purposes, making it difficult to test the website (requiring a local installation of MongoDB)
@@ -18,9 +20,11 @@ MongoDB is used for data storage. Since transactions are needed for this project
 ### Environment variables
 
 **Only used in local development purposes, overridden in production by docker-compose.yml**
+
 `MONGODB_URI=mongodb://user:password@host:27017/db-name?authSource=admin`
 
 **Used in both production and development environments**
+
 `JWT_SECRET=a-long-string`
 
 `PASSWORD_HASHING_ROUNDS=12`
