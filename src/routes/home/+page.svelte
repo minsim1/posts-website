@@ -133,6 +133,7 @@
 	.post-timeframe-text{
 		font-size: 1rem;
 		color: var(--color-text-secondary);
+		margin-top: 0.5rem;
 		margin-bottom: 0.5rem;
 		padding: 0 1rem;
 		font-style: italic;

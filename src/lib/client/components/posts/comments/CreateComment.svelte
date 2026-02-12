@@ -315,7 +315,6 @@
 
         textarea{
             font-size: 0.9rem;
-            max-height: 30px;
             padding: 10px;
         }
 
