@@ -143,5 +143,9 @@
         .controls-row {
             gap: 0;
         }
+
+        .controls-row{
+            padding: 0 0.7rem;
+        }
     }
 </style>

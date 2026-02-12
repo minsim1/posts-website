@@ -96,7 +96,7 @@
 			<p class="no-posts-text">No posts found from the last <b>{GetApprxTimeDifferenceString(CONFIG.posts.query.timeframeToQuery, 0)}</b> :/</p>
 			<p class="no-posts-text">Check <a href="/history">history</a> or create some yourself!</p>
 		{:else}
-			<p class="post-timeframe-text">Here are the posts from the last <b>{GetApprxTimeDifferenceString(CONFIG.posts.query.timeframeToQuery, 0)}</b></p>
+			<p class="post-timeframe-text">Showing posts from the last <b>{GetApprxTimeDifferenceString(CONFIG.posts.query.timeframeToQuery, 0)}</b></p>
 			<Posts
 				posts={posts}
 				showModerationRedirect={user ? user.role == "moderator" || user.role == "admin" : false}
@@ -135,6 +135,7 @@
 		color: var(--color-text-secondary);
 		margin-bottom: 0.5rem;
 		padding: 0 1rem;
+		font-style: italic;
 		text-align: center;
 	}
 
@@ -143,6 +144,7 @@
 		color: var(--color-text-secondary);
 		margin: 0.5rem 0;
 		padding: 0 1rem;
+		font-style: italic;
 		text-align: center;
 	}
 </style>

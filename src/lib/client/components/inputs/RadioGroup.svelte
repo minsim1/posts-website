@@ -103,7 +103,7 @@
 
 	@media (max-width: 600px) {
 		.radio-option{
-			padding: 0.4rem 0.75rem;
+			padding: 0.2rem 0.4rem;
 		}
 	}
 </style>
