@@ -1,11 +1,11 @@
-name: Deploy to Production
+name: Deploy to Production (Disabled)
 
 on:
-  push:
-    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   deploy:
+    if: ${{ false }}
     runs-on: ubuntu-latest
     steps:
       - name: SSH into server and run script
