@@ -1,6 +1,14 @@
-*This is only a technical guide. If you want to find out more about this project's purpose, please refer to /static/about/about.md.*
+# Sunset
+
+To everyone who participated in this project - Thank You! I am grateful for all the posts and comments. For anyone interested, here is the final tally:
+
+Total posts: 296
+Total comments: 506
+Total votes: 867
 
 # Project development information
+
+*The following is only a technical guide. If you want to find out more about this project's purpose, please refer to /static/about/about.md.*
 
 ### Versions
 node => 24.11.0
